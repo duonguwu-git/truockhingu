@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trại Tết 10/5 Vui Xuân – Bản Thần Thoại</title>
+<style>
+/* =========================
+   TRẠI TẾT 10/5 – BẢN THẦN THOẠI
+   Dev by Hai Duong
+   ========================= */
+html,body{
+  margin:0; padding:0;
+  background: radial-gradient(circle at top,#3a0a0a,#120000);
+  font-family:'Segoe UI',sans-serif;
+  color:#ffd700;
+  overflow-x:hidden;
+}
+#app{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.panel{
+  width:92%;
+  max-width:420px;
+  background:#fff5e6;
+  border:10px double #7a3e00;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 0 40px rgba(255,215,0,.4);
+  text-align:center;
+  animation:fadeIn .8s ease;
+}
+h1{
+  color:#c0392b;
+  font-size:22px;
+  margin-bottom:10px;
+}
+.texture-question{
+  background:linear-gradient(135deg,#5b0f6a,#2b0033);
+  color:#fff;
+  padding:18px;
+  border-radius:15px;
+  box-shadow:inset 0 0 15px rgba(255,255,255,.2);
+  margin-bottom:15px;
+  animation:pulse 1.5s infinite;
+}
+button{
+  background:linear-gradient(135deg,#ffd700,#ffb400);
+  border:none;
+  padding:12px 18px;
+  border-radius:30px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:8px;
+  box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+button:active{transform:scale(.95)}
+#shaker{
+  width:200px;
+  height:200px;
+  margin:0 auto 20px;
+  background:radial-gradient(circle,#7b0000,#2b0000);
+  border-radius:50%;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.6);
+  display:none;
+}
+.shake{
+  animation:shake .15s infinite;
+}
+#sticks{
+  display:none;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+.stick{
+  width:40px;
+  height:140px;
+  background:linear-gradient(180deg,#f5deb3,#caa472);
+  border-radius:20px;
+  cursor:pointer;
+  perspective:800px;
+}
+.stick-inner{
+  width:100%;
+  height:100%;
+  background:inherit;
+  border-radius:20px;
+  transition:transform .6s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+  color:#5a2d00;
+}
+.stick.flipped .stick-inner{
+  transform:rotateY(180deg) scale(1.1);
+}
+#result{
+  display:none;
+  margin-top:15px;
+  animation:zoomIn .5s ease;
+}
+.footer{
+  position:fixed;
+  left:10px;
+  bottom:8px;
+  font-size:11px;
+  color:#ffd700;
+  opacity:.7;
+}
+@keyframes shake{
+  0%{transform:translate(0,0) rotate(0deg)}
+  25%{transform:translate(2px,-2px) rotate(-2deg)}
+  50%{transform:translate(-2px,2px) rotate(2deg)}
+  75%{transform:translate(2px,2px) rotate(-2deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+@keyframes zoomIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 15px rgba(255,215,0,.3)}
+  50%{box-shadow:0 0 30px rgba(255,215,0,.8)}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="panel" id="screen1">
+    <h1>🔮 Trại Tết 10/5 Vui Xuân</h1>
+    <div class="texture-question">Bạn đã sẵn sàng chưa?<br>Tương lai 2026 của bạn là…</div>
+    <button onclick="next()">Đồng ý</button>
+  </div>
+
+  <div class="panel" id="screen2" style="display:none">
+    <h1>🥏 Xóc Quẻ Định Mệnh</h1>
+    <div id="shaker"></div>
+    <button onclick="shake()">Xóc quẻ</button>
+    <div id="sticks"></div>
+    <div id="result"></div>
+  </div>
+</div>
+
+<div class="footer">dev by Hai Duong</div>
+
+<script>
+let shaken=false;
+const fortunes=[
+  "Đại cát – 10/5 vô địch bóng chuyền!",
+  "Bình an – mua nước 10/5 giải nghiệp",
+  "Thị phi nhẹ – đừng sân si, vận sẽ lên",
+  "May mắn – có móc khoá quầy 10/5",
+  "Huyền thoại – Aura rực rỡ toàn trại"
+];
+function next(){
+  document.getElementById('screen1').style.display='none';
+  document.getElementById('screen2').style.display='block';
+}
+function shake(){
+  if(shaken) return;
+  shaken=true;
+  const s=document.getElementById('shaker');
+  s.style.display='block';
+  s.classList.add('shake');
+  setTimeout(()=>{
+    s.classList.remove('shake');
+    showSticks();
+  },2000);
+}
+function showSticks(){
+  const box=document.getElementById('sticks');
+  box.style.display='flex';
+  box.innerHTML='';
+  for(let i=0;i<6;i++){
+    const st=document.createElement('div');
+    st.className='stick';
+    const inner=document.createElement('div');
+    inner.className='stick-inner';
+    inner.innerText='?';
+    st.appendChild(inner);
+    st.onclick=()=>pick(st,inner);
+    box.appendChild(st);
+  }
+}
+function pick(st,inner){
+  if(st.classList.contains('flipped'))return;
+  st.classList.add('flipped');
+  const res=fortunes[Math.floor(Math.random()*fortunes.length)];
+  inner.innerText=res;
+  const r=document.getElementById('result');
+  r.style.display='block';
+  r.innerHTML='<h3>'+res+'</h3><p>Nếu có quà, hãy mang màn hình ra quầy 10/5 nhận nhé!</p>';
+}
+</script>
+</body>
+</html>
