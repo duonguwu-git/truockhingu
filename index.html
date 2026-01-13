@@ -1,4 +1,4 @@
-<!DO<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -37,8 +37,9 @@
             font-size: 20px;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             margin: 20px 0;
+            will-change: transform, box-shadow;
         }
         button:hover { transform: scale(1.05); box-shadow: 0 5px 10px rgba(255, 215, 0, 0.5); }
         input[type="date"] {
@@ -57,27 +58,28 @@
             height: 200px;
             background: url('jar.png') center/contain no-repeat; /* Giả định file jar.png */
             margin: 40px auto;
-            transition: transform 0.1s;
+            transition: transform 0.1s ease-in-out;
+            will-change: transform;
         }
-        .shaking { animation: shake 0.5s infinite; }
+        .shaking { animation: shake 0.3s infinite ease-in-out; }
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-2px, -1px) rotate(-2deg); }
+            20% { transform: translate(2px, 1px) rotate(2deg); }
+            30% { transform: translate(-1px, 2px) rotate(-1deg); }
+            40% { transform: translate(1px, -2px) rotate(1deg); }
+            50% { transform: translate(-3px, 0) rotate(-3deg); }
+            60% { transform: translate(3px, 1px) rotate(3deg); }
+            70% { transform: translate(-2px, -1px) rotate(-2deg); }
+            80% { transform: translate(2px, 2px) rotate(2deg); }
+            90% { transform: translate(-1px, -2px) rotate(-1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
         }
         /* Thẻ quẻ xòe quạt */
         .cards-container {
             display: flex;
             justify-content: center;
-            perspective: 1000px;
+            perspective: 1200px;
             margin: 40px 0;
         }
         .card {
@@ -86,11 +88,12 @@
             background: #ffd700; /* Mặt sau */
             margin: 0 10px;
             cursor: pointer;
-            transition: transform 0.5s, box-shadow 0.3s;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease-in-out;
             transform-style: preserve-3d;
             position: relative;
+            will-change: transform, box-shadow;
         }
-        .card:hover { box-shadow: 0 0 20px #ffd700; }
+        .card:hover { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); transform: scale(1.05); }
         .card.flipped { transform: rotateY(180deg); }
         .card-front, .card-back {
             position: absolute;
@@ -98,6 +101,7 @@
             height: 100%;
             backface-visibility: hidden;
             border-radius: 10px;
+            transition: opacity 0.3s ease-in-out;
         }
         .card-front { background: url('card-back.png') center/cover; /* Mặt sau thẻ */ }
         .card-back {
@@ -109,7 +113,9 @@
             padding: 10px;
             font-size: 14px;
             color: #c0392b;
+            opacity: 0;
         }
+        .card.flipped .card-back { opacity: 1; }
         /* Modal kết quả */
         #result-modal {
             position: fixed;
@@ -121,16 +127,23 @@
             display: none;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
+        #result-modal.visible { opacity: 1; }
         #result-content {
             background: #fff5e6;
             padding: 30px;
             border-radius: 20px;
             max-width: 90%;
             text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.5s ease-in-out;
+            will-change: transform;
         }
+        #result-modal.visible #result-content { transform: scale(1); }
         /* Confetti canvas */
-        #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -223,8 +236,7 @@
             'Học hành đỉnh cao, điểm 10 bay tùm lum!',
             'Party tẹt ga, bạn bè quẩy max vol!',
 
-            // Thêm 95 cái tương tự...
-            // Để đủ 100, lặp pattern hài hước Gen Z
+            // Thêm 95 cái tương tự... (bạn cần mở rộng để đủ 100)
 
             // Quẻ bình thường (50 cái, ví dụ 5)
             '2026 ổn áp, không drama gì to tát.',
@@ -244,12 +256,9 @@
 
             // Thêm 44...
 
-            // Một số có quà
-            'Siêu may, 2026 giàu to! Nhận móc khóa quà từ 10/5!',
-            // Tích hợp random vào quẻ vui/bình/xui
+            // Một số có quà (tích hợp random)
         ];
-
-        // Để đủ 200, bạn cần mở rộng mảng này. Hiện tại dùng placeholder, random từ 0-199.
+        // Để đủ 200, mở rộng mảng. Hiện dùng placeholder.
 
         // Quẻ VIP
         const vipFortune = '💎 THIẾU GIA VIP 10/5! Quà đặc biệt chờ bạn tại quầy!';
@@ -261,7 +270,12 @@
             }
             const index = Math.floor(Math.random() * fortunes.length);
             const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
-            return { result: fortunes[index], type };
+            let result = fortunes[index];
+            // Random thêm quà cho một số quẻ (ví dụ 10% cơ hội)
+            if (Math.random() < 0.1 && type !== 'bad') {
+                result += ' Nhận móc khóa quà từ 10/5!';
+            }
+            return { result, type };
         }
 
         // Ẩn hiện màn
@@ -274,46 +288,57 @@
             document.querySelectorAll('.screen').forEach(s => s.style.display = show ? 'block' : 'none');
         }
 
-        // Confetti simple (canvas)
+        // Confetti mượt hơn với requestAnimationFrame
         function confetti(isVip = false) {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             const particles = [];
-            for (let i = 0; i < (isVip ? 300 : 100); i++) {
+            const numParticles = isVip ? 300 : 100;
+            for (let i = 0; i < numParticles; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height - canvas.height,
                     r: Math.random() * 4 + 1,
-                    d: Math.random() * (isVip ? 10 : 5),
+                    d: Math.random() * numParticles / 100,
                     color: `hsl(${Math.random()*360}, 100%, 50%)`,
-                    tilt: Math.random() * 10 - 10
+                    tilt: Math.random() * 10 - 10,
+                    tiltAngleIncremental: (Math.random() * 0.07) + .05,
+                    tiltAngle: 0
                 });
             }
+            let animationFrame;
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
+                particles.forEach((p, index) => {
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                    p.tilt = Math.sin(p.tiltAngle) * 15;
                     ctx.beginPath();
                     ctx.lineWidth = p.r;
                     ctx.strokeStyle = p.color;
-                    ctx.moveTo(p.x + p.tilt + p.r/4, p.y);
-                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r/4);
+                    ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
                     ctx.stroke();
-                    p.tilt = Math.sin(p.tilt) * 0.1;
-                    p.y += (Math.cos(p.d) + 3 + p.r/2) / 2;
-                    if (p.y > canvas.height) particles.splice(particles.indexOf(p), 1);
+                    if (p.y > canvas.height + 20) particles.splice(index, 1);
                 });
-                if (particles.length) requestAnimationFrame(draw);
+                if (particles.length > 0) {
+                    animationFrame = requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
             }
             draw();
-            setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), isVip ? 10000 : 5000);
+            setTimeout(() => cancelAnimationFrame(animationFrame), isVip ? 10000 : 5000);
         }
 
-        // Hiển thị kết quả
+        // Hiển thị kết quả với animation modal
         function showResult(text, type) {
             document.getElementById('result-text').innerText = text;
-            document.getElementById('result-modal').style.display = 'flex';
+            const modal = document.getElementById('result-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('visible'), 10);
             vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
             if (type === 'good' || type === 'vip') {
                 playAudio(type === 'vip' ? audioVip : audioWin);
@@ -352,7 +377,7 @@
                 audioShake.pause();
                 audioShake.currentTime = 0;
                 showScreen('screen-cards');
-                // Tạo thẻ quẻ xòe quạt
+                // Tạo thẻ quẻ xòe quạt với animation xuất hiện mượt
                 const container = document.querySelector('.cards-container');
                 container.innerHTML = '';
                 for (let i = 0; i < 5; i++) { // Giả sử 5 thẻ
@@ -362,7 +387,14 @@
                         <div class="card-front"></div>
                         <div class="card-back">Quẻ bí mật!</div>
                     `;
-                    card.style.transform = `rotate(${ (i - 2) * 15 }deg)`;
+                    card.style.transform = `rotate(${ (i - 2) * 15 }deg) scale(0)`;
+                    card.style.opacity = 0;
+                    card.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
+                    container.appendChild(card);
+                    setTimeout(() => {
+                        card.style.transform = `rotate(${ (i - 2) * 15 }deg) scale(1)`;
+                        card.style.opacity = 1;
+                    }, i * 100); // Stagger animation
                     card.addEventListener('click', () => {
                         playAudio(audioFlip);
                         vibrate(50);
@@ -371,16 +403,17 @@
                             const fortune = getRandomFortune(birthdate);
                             localStorage.setItem(storageKey, JSON.stringify(fortune));
                             showResult(fortune.result, fortune.type);
-                        }, 500);
+                        }, 600); // Đồng bộ với transition 0.6s
                     });
-                    container.appendChild(card);
                 }
             }, 2500);
         });
 
         document.getElementById('close-modal').addEventListener('click', () => {
-            document.getElementById('result-modal').style.display = 'none';
-            // Không cho gieo lại, có thể reload để xem lại
+            const modal = document.getElementById('result-modal');
+            modal.classList.remove('visible');
+            setTimeout(() => modal.style.display = 'none', 500);
+            // Không cho gieo lại
         });
 
         // Resize confetti
