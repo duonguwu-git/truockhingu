@@ -193,14 +193,14 @@
     <canvas id="confetti-canvas" width="300" height="300"></canvas>
 
     <script>
-        // Âm thanh (giả định file audio trong cùng folder, HTTPS trên GitHub Pages)
-        const audioClick = new Audio('click.mp3');
-        const audioShake = new Audio('shake.mp3');
+        // Âm thanh (tải trực tiếp từ URL HTTPS, royalty-free từ các nguồn mở)
+        const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
+        const audioShake = new Audio('https://www.myinstants.com/media/sounds/skeleton-rattling.mp3');
         audioShake.loop = true;
-        const audioFlip = new Audio('flip.mp3');
-        const audioWin = new Audio('win.mp3');
-        const audioSad = new Audio('sad.mp3');
-        const audioVip = new Audio('vip.mp3');
+        const audioFlip = new Audio('https://www.orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
+        const audioWin = new Audio('https://www.myinstants.com/media/sounds/final-fantasy-vii-victory-fanfare-1.mp3');
+        const audioSad = new Audio('https://www.myinstants.com/media/sounds/tf_nemesis.mp3');
+        const audioVip = new Audio('https://www.myinstants.com/media/sounds/celebration.mp3');
 
         // Mở khóa âm thanh bằng dummy play/pause
         function unlockAudio(audio) {
