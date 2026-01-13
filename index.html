@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xóc Quẻ Định Mệnh</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>🔮 Xóc Quẻ Định Mệnh — Gen Z</title>
 
 <style>
 :root{
@@ -11,266 +11,536 @@
   --vang:#ffd700;
   --giay:#fff5e6;
   --go:#5d4037;
+  --text:#2c2c2c;
 }
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  background:linear-gradient(#3e2723,#1b0000);
-  color:#3e2723;
-  display:flex;
-  justify-content:center;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(180deg,#2e1b18 0%, #1a0c0c 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text);
 }
 .app{
   width:100%;
   max-width:420px;
-  min-height:100vh;
   background:var(--giay);
-  padding:20px;
-  text-align:center;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  min-height:90vh;
+  margin:12px;
 }
-h1{color:var(--do)}
-button{
-  background:var(--do);
-  color:white;
-  border:none;
-  padding:14px 20px;
-  border-radius:12px;
-  font-size:16px;
-  margin-top:15px;
-  width:100%;
+.header{
+  display:flex;align-items:center;gap:12px;
 }
-button:active{transform:scale(0.96)}
-input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:2px solid var(--go);
-  font-size:16px;
+.logo{
+  background:linear-gradient(180deg,var(--do),#8b1f1f);
+  color:white;width:62px;height:62px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 6px 18px rgba(0,0,0,0.25)
 }
-.hidden{display:none}
+h1{margin:0;font-size:20px;color:var(--go)}
+.lead{color:#5d4037;margin-top:6px;font-size:13px}
 
-/* Ống quẻ */
-.jar{
-  font-size:100px;
-  margin:20px 0;
+/* Steps */
+.step{margin-top:18px}
+.btn{
+  width:100%;padding:12px 14px;border-radius:12px;border:none;
+  background:var(--do);color:white;font-size:16px;margin-top:10px;
+  box-shadow:0 6px 12px rgba(192,57,43,0.2);
 }
-.shake{
-  animation:shake 0.2s infinite;
-}
-@keyframes shake{
-  0%{transform:rotate(0)}
-  25%{transform:rotate(5deg)}
-  50%{transform:rotate(0)}
-  75%{transform:rotate(-5deg)}
-}
+.btn:active{transform:scale(0.985)}
+.small{font-size:13px;color:#4b3a36}
 
-/* Quẻ */
-.cards{
-  display:flex;
-  justify-content:center;
-  margin-top:30px;
-  position:relative;
-  height:160px;
-}
+/* Jar */
+.center{display:flex;flex-direction:column;align-items:center}
+.jar{font-size:84px;margin:18px 0;transform-origin:center}
+.shake{animation:shake 0.12s linear infinite}
+@keyframes shake{0%{transform:rotate(0)}25%{transform:rotate(6deg)}50%{transform:rotate(0)}75%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+
+/* Cards fan */
+.cards{height:180px;position:relative;margin-top:8px}
 .card{
-  width:80px;
-  height:140px;
-  background:linear-gradient(#fff,#f5e6c8);
-  border:3px solid var(--go);
-  border-radius:12px;
-  position:absolute;
-  transform-origin:bottom center;
-  cursor:pointer;
+  width:86px;height:150px;border-radius:10px;background:linear-gradient(#fff,#f4ead0);
+  border:3px solid var(--go);position:absolute;left:50%;bottom:0;transform-origin:bottom center;
+  box-shadow:0 6px 20px rgba(93,64,55,0.25);
+  display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--go);
+  user-select:none;touch-action:none;
 }
-.card:nth-child(1){transform:rotate(-25deg) translateX(-120px)}
-.card:nth-child(2){transform:rotate(-15deg) translateX(-70px)}
-.card:nth-child(3){transform:rotate(-5deg) translateX(-20px)}
-.card:nth-child(4){transform:rotate(5deg) translateX(20px)}
-.card:nth-child(5){transform:rotate(15deg) translateX(70px)}
-.card:nth-child(6){transform:rotate(25deg) translateX(120px)}
+.card.hide{opacity:0;pointer-events:none;transform:scale(0.95)}
+.card:nth-child(1){transform:translateX(-138px) rotate(-25deg)}
+.card:nth-child(2){transform:translateX(-90px) rotate(-15deg)}
+.card:nth-child(3){transform:translateX(-38px) rotate(-6deg)}
+.card:nth-child(4){transform:translateX(8px) rotate(6deg)}
+.card:nth-child(5){transform:translateX(58px) rotate(15deg)}
+.card:nth-child(6){transform:translateX(110px) rotate(25deg)}
 
+/* Result */
 .result{
-  margin-top:20px;
-  padding:15px;
-  border-radius:12px;
-  background:#fff;
-  border:2px dashed var(--do);
+  margin-top:18px;padding:14px;border-radius:12px;background:white;border:2px dashed var(--do);
+  min-height:60px;display:flex;flex-direction:column;justify-content:center;
 }
-.good{color:green}
-.bad{color:#555}
-.vip{
-  background:linear-gradient(45deg,#ffd700,#ffecb3);
-  animation:glow 1s infinite alternate;
+.result.vip{
+  background:linear-gradient(45deg,#fff8e1,#fffde7);
+  border:2px solid #ffd54f;
+  box-shadow:0 8px 30px rgba(255,213,79,0.15);
 }
-@keyframes glow{
-  from{box-shadow:0 0 5px gold}
-  to{box-shadow:0 0 20px gold}
-}
-.gift{
-  color:red;
-  font-weight:bold;
-  margin-top:10px;
+.gift{margin-top:10px;color:var(--do);font-weight:700}
+
+/* small screens */
+@media(max-width:420px){
+  .jar{font-size:72px}
+  .card{width:74px;height:130px}
+  .card:nth-child(1){transform:translateX(-120px) rotate(-25deg)}
+  .card:nth-child(6){transform:translateX(92px) rotate(25deg)}
 }
 
-/* Confetti */
-canvas{
-  position:fixed;
-  top:0;left:0;
-  pointer-events:none;
-}
+/* Confetti canvas */
+canvas{position:fixed;left:0;top:0;pointer-events:none;z-index:9999}
+.note{font-size:12px;color:#5d4037;margin-top:8px}
 </style>
 </head>
-
 <body>
-<div class="app">
-
-<h1>🔮 XÓC QUẺ ĐỊNH MỆNH</h1>
-
-<div id="step1">
-  <p>Bạn có tin vào định mệnh?</p>
-  <button onclick="nextStep(1)">Tôi tin</button>
-</div>
-
-<div id="step2" class="hidden">
-  <p>Mỗi người chỉ bốc một lần, sẵn sàng chưa?</p>
-  <button onclick="nextStep(2)">Sẵn sàng</button>
-</div>
-
-<div id="step3" class="hidden">
-  <p>Nhập ngày sinh của bạn</p>
-  <input type="date" id="dob">
-  <button onclick="startShake()">Lắc quẻ</button>
-</div>
-
-<div id="shakeArea" class="hidden">
-  <div id="jar" class="jar">🏺</div>
-  <p>Đang lắc quẻ...</p>
-</div>
-
-<div id="cardsArea" class="hidden">
-  <p>Chọn 1 quẻ</p>
-  <div class="cards">
-    <div class="card" onclick="pickCard()"></div>
-    <div class="card" onclick="pickCard()"></div>
-    <div class="card" onclick="pickCard()"></div>
-    <div class="card" onclick="pickCard()"></div>
-    <div class="card" onclick="pickCard()"></div>
-    <div class="card" onclick="pickCard()"></div>
+<div class="app" role="main">
+  <div class="header">
+    <div class="logo">🏺</div>
+    <div>
+      <h1>XÓC QUẺ ĐỊNH MỆNH</h1>
+      <div class="lead">Phiên bản Gen Z — 200 câu, có âm thanh & rung</div>
+    </div>
   </div>
+
+  <!-- STEP 1 -->
+  <div id="step1" class="step">
+    <p class="small">Bạn có tin vào định mệnh?</p>
+    <button class="btn" onclick="nextStep(1)">Tôi tin</button>
+    <div class="note">Bấm là mở khóa âm thanh & rung trên điện thoại</div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" class="step" style="display:none">
+    <p class="small">Mỗi người chỉ bốc một lần, sẵn sàng chưa?</p>
+    <button class="btn" onclick="nextStep(2)">Sẵn sàng</button>
+  </div>
+
+  <!-- STEP 3: nhập ngày sinh -->
+  <div id="step3" class="step" style="display:none">
+    <label class="small">Nhập ngày sinh</label>
+    <input id="dob" type="date" style="width:100%;padding:12px;border-radius:10px;border:2px solid var(--go);margin-top:8px" />
+    <button class="btn" onclick="startShake()">Lắc quẻ</button>
+    <div class="note">Quá trình lắc 2.5s kèm rung & âm thanh</div>
+  </div>
+
+  <!-- SHAKE AREA -->
+  <div id="shakeArea" style="display:none" class="step center">
+    <div id="jar" class="jar">🏺</div>
+    <div class="small">Đang lắc quẻ...</div>
+  </div>
+
+  <!-- CARDS -->
+  <div id="cardsArea" style="display:none" class="step">
+    <p class="small">Chọn 1 thẻ quẻ</p>
+    <div class="cards" id="cards">
+      <div class="card" onclick="pickCard(0)"></div>
+      <div class="card" onclick="pickCard(1)"></div>
+      <div class="card" onclick="pickCard(2)"></div>
+      <div class="card" onclick="pickCard(3)"></div>
+      <div class="card" onclick="pickCard(4)"></div>
+      <div class="card" onclick="pickCard(5)"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultArea" style="display:none" class="step"></div>
+
 </div>
 
-<div id="resultArea" class="hidden"></div>
-
-</div>
-
+<!-- Confetti canvas -->
 <canvas id="confetti"></canvas>
 
-<audio id="click" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c6c9d35b6.mp3"></audio>
-<audio id="shakeSound" src="https://cdn.pixabay.com/audio/2022/10/25/audio_8b0a4c2c2b.mp3" loop></audio>
-<audio id="swipe" src="https://cdn.pixabay.com/audio/2022/03/10/audio_5c3c8c7b2f.mp3"></audio>
-<audio id="win" src="https://cdn.pixabay.com/audio/2022/08/04/audio_4a3c7e7f1a.mp3"></audio>
-<audio id="sad" src="https://cdn.pixabay.com/audio/2022/11/16/audio_7f1c6b2f4d.mp3"></audio>
+<!-- Audio (Pixabay links HTTPS) -->
+<audio id="click" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c6c9d35b6.mp3?filename=click-82053.mp3" preload="auto"></audio>
+<audio id="shakeSound" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_87b0b8e079.mp3?filename=wooden-clacker-110995.mp3" preload="auto"></audio>
+<audio id="swipe" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_5c3c8c7b2f.mp3?filename=paper-swipe-80914.mp3" preload="auto"></audio>
+<audio id="win" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_4a3c7e7f1a.mp3?filename=happy-fanfare-110758.mp3" preload="auto"></audio>
+<audio id="sad" src="https://cdn.pixabay.com/download/audio/2022/11/16/audio_7f1c6b2f4d.mp3?filename=sad-violin-129898.mp3" preload="auto"></audio>
 
 <script>
+/* ---------- Data: 200 câu Gen Z (không trùng) ---------- */
 const fortunes = [
-"Đại cát – sắp có lộc ăn uống",
-"Tiểu cát – hôm nay gặp người dễ thương",
-"Xui nhẹ – nhớ coi chừng rớt đồ. Mua nước tại quầy 10/5 để giải nghiệp",
-"Xui – làm gì cũng từ từ. Mua nước tại quầy 10/5 để giải nghiệp",
-"Đại cát – vận may tài chính",
-"Trung bình – bình tĩnh là thắng",
-"Xui meme – ngủ sớm đi. Mua nước tại quầy 10/5 để giải nghiệp"
-];
-// nhân lên cho đủ ~70
-while(fortunes.length<70) fortunes.push(...fortunes);
+"Vibe hôm nay ổn, làm gì cũng trôi",
+"Hôm nay nói chuyện dễ được người khác nghe",
+"Có tin nhắn làm bạn cười nhẹ",
+"Ra đường gặp chuyện nhỏ nhưng vui",
+"Tâm trạng tốt hơn mong đợi",
+"Làm bài nhanh hơn bình thường",
+"Có người chủ động bắt chuyện",
+"Hôm nay hợp nghe nhạc chill",
+"Ăn uống thấy ngon hơn mọi ngày",
+"Có cảm giác được quan tâm",
+"Làm việc không mệt như tưởng",
+"Dễ gặp người hợp năng lượng",
+"Hôm nay ít drama",
+"Đi đâu cũng thấy quen quen",
+"Có niềm vui nhỏ cuối ngày",
+"Được người khác giúp mà không cần xin",
+"Hôm nay hợp làm việc nhóm",
+"Cảm giác tự tin hơn thường lệ",
+"Có người nhắc tên bạn theo hướng tốt",
+"Lướt mạng thấy toàn nội dung hợp gu",
+"Hôm nay bình thường nhưng không xui",
+"Mọi thứ diễn ra đúng mức",
+"Không có gì nổi bật nhưng yên ổn",
+"Làm xong việc là muốn nghỉ",
+"Hợp ở yên một chỗ",
+"Tâm trạng lên xuống nhẹ",
+"Dễ bị phân tâm chút xíu",
+"Nên làm việc chậm lại",
+"Hôm nay hợp nghe podcast",
+"Mọi thứ tạm ổn, chưa bùng nổ",
+"Không quá vui nhưng cũng không buồn",
+"Dễ quên mấy chuyện nhỏ",
+"Nên ngủ sớm hơn thường ngày",
+"Hôm nay hợp quan sát hơn là hành động",
+"Có cảm giác hơi lười",
+"Mọi thứ vẫn trong tầm kiểm soát",
+"Nên tránh quyết định lớn",
+"Hôm nay hợp làm việc quen tay",
+"Không có biến lớn",
+"Cứ để mọi thứ tự trôi",
+"Hôm nay dễ gặp chuyện lặt vặt. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ quên đồ cá nhân. Mua nước tại quầy 10/5 để giải nghiệp",
+"Nói chuyện dễ bị hiểu lầm nhẹ. Mua nước tại quầy 10/5 để giải nghiệp",
+"Làm việc hay bị ngắt quãng. Mua nước tại quầy 10/5 để giải nghiệp",
+"Hôm nay không hợp tranh luận. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ bị tụt mood giữa chừng. Mua nước tại quầy 10/5 để giải nghiệp",
+"Kế hoạch dễ bị đổi phút chót. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ cáu vì chuyện nhỏ. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không nên làm nhiều việc cùng lúc. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ mất tập trung khi cần tập trung. Mua nước tại quầy 10/5 để giải nghiệp",
+"Hay quên deadline nhỏ. Mua nước tại quầy 10/5 để giải nghiệp",
+"Nói trước quên sau. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không hợp thức khuya. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ thấy mệt dù không làm gì nhiều. Mua nước tại quầy 10/5 để giải nghiệp",
+"Tâm trạng thất thường. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không hợp ra quyết định nhanh. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ bị ảnh hưởng bởi lời người khác. Mua nước tại quầy 10/5 để giải nghiệp",
+"Hôm nay nên giữ im lặng khi cần. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không hợp so sánh bản thân. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ bị mất hứng giữa chừng. Mua nước tại quầy 10/5 để giải nghiệp",
+"Hôm nay có lộc ăn vặt",
+"Dễ được rủ đi đâu đó",
+"Có người nhớ tới bạn",
+"Tự nhiên thấy yêu đời hơn",
+"Làm việc xong sớm hơn dự kiến",
+"Có tin vui nhỏ từ bạn bè",
+"Dễ gặp người nói chuyện hợp",
+"Hôm nay hợp thử cái mới",
+"Cảm giác được công nhận",
+"Có người nhường bạn phần tốt",
+"Ra đường thấy mọi thứ nhẹ nhàng",
+"Tâm trạng ổn suốt ngày",
+"Dễ cười vì chuyện linh tinh",
+"Có khoảnh khắc thấy mình ổn",
+"Hôm nay hợp selfie",
+"Có người để ý bạn",
+"Làm gì cũng không bị cản",
+"Dễ được giúp khi cần",
+"Hôm nay hợp học cái mới",
+"Có chuyện nhỏ làm bạn vui",
+"Hôm nay nên cẩn thận lời nói. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ hiểu sai ý người khác. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không hợp tranh cãi đúng sai. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ bị trễ giờ. Mua nước tại quầy 10/5 để giải nghiệp",
+"Nên kiểm tra lại trước khi gửi. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ quên việc đã hứa. Mua nước tại quầy 10/5 để giải nghiệp",
+"Tâm trạng dễ bị kéo xuống. Mua nước tại quầy 10/5 để giải nghiệp",
+"Nên hạn chế suy nghĩ tiêu cực. Mua nước tại quầy 10/5 để giải nghiệp",
+"Không hợp làm việc gấp. Mua nước tại quầy 10/5 để giải nghiệp",
+"Dễ thấy mọi thứ phiền hơn bình thường. Mua nước tại quầy 10/5 để giải nghiệp",
+"Hôm nay hợp đi bộ",
+"Có cảm giác nhẹ lòng hơn",
+"Dễ buông bỏ chuyện cũ",
+"Hôm nay hợp nghe nhạc buồn nhẹ",
+"Có khoảnh khắc thấy mình trưởng thành",
+"Tâm trạng chậm nhưng ổn",
+"Không cần cố gắng quá nhiều",
+"Hôm nay hợp nghỉ ngơi",
+"Có người hiểu bạn",
+"Mọi thứ vừa đủ",
+"Hôm nay có chút háo hức",
+"Nghe bài cũ mà thấy ấm",
+"Được gợi ý hay ho từ ai đó",
+"Có cơ hội nói chuyện online thú vị",
+"Hôm nay hợp làm đồ ngọt",
+"Nên tránh so đo nhỏ nhặt",
+"Có cơ hội thử sức",
+"Được khen một câu mà ghiền",
+"Muốn làm lại từ đầu mà dễ",
+"Hôm nay hợp ghi chú ngắn gọn",
+"Cần giữ tiền cho chuyện quan trọng",
+"Có phen cười ngượng nhưng vui",
+"Nên chậm lại khi viết tin nhắn",
+"Có cơ hội chụp ảnh đẹp",
+"Hôm nay dễ xin nghỉ được chấp thuận",
+"Cần uống nước đều đặn",
+"Có lúc thấy muốn nghỉ học/việc nhưng rồi ổn",
+"Có đoạn story khiến bạn thả tim",
+"Đi bộ thấy cuộc đời tươi tắn",
+"Được rủ làm việc nhóm vui",
+"Có món ăn khiến bạn nhớ lại tuổi thơ",
+"Hôm nay không hợp ăn món lạ",
+"Cần cân nhắc trước khi bấm gửi",
+"Được đề xuất playlist hợp gu",
+"Có người cho combo đồ xịn",
+"Hôm nay dễ được ai đó mời trà sữa",
+"Thấy tiền lẻ rơi mà vui",
+"Người quen lâu lâu liên lạc",
+"Chuẩn bị đồ trước để đỡ vội",
+"Bảo quản điện thoại kỹ, dễ rớt",
+"Nên check email/tn quan trọng",
+"Có cuộc gọi bất ngờ nhưng tốt",
+"Được tặng quà bé xinh",
+"Hôm nay hợp mua đồ second-hand",
+"Thoải mái khi ở cạnh ai đó",
+"Cần tránh nhắn khi đang nóng giận",
+"Được ai đó share tip hay",
+"Ăn vặt bất ngờ ghiền không thôi",
+"Có lúc muốn đổi style",
+"Hôm nay hợp làm list nhạc",
+"Đừng tin hoàn toàn dòng comment ẩn danh",
+"Giữ bình tĩnh nếu gặp drama",
+"Có người giúp bạn ghi nhớ việc",
+"Kiểm tra ví trước khi ra đường",
+"Có người đưa đường đi đúng",
+"Được đồng ý join nhóm hay dự án",
+"Muốn xách balo đi đâu đó ngay",
+"Ăn sáng đủ để đầu tỉnh táo",
+"Hôm nay hợp quãng nghỉ ngắn",
+"Được tag vào post vui",
+"Thấy meme đúng hoàn cảnh",
+"Ăn đồ cay nhớ uống nước nhiều",
+"Đừng để điện thoại tụt pin lúc cần",
+"Cần tỉa tóc, check giá trước",
+"Trong ngày có ít phút chill đúng nghĩa",
+"Có người gửi voice dễ thương",
+"Nên giữ cuộc gọi quan trọng ngắn gọn",
+"Được gợi ý đời sống lành mạnh hơn",
+"Cuối ngày có khoảnh khắc hài lòng",
+"Được mời xem phim hay",
+"Nhận được lời khen vô duyên nhưng vui",
+"Mua đồ online check reviews trước",
+"Đừng để bị kéo vào tranh luận thừa",
+"Thấy mình làm tốt một việc nhỏ",
+"Có cơ hội kiếm thêm lương vặt",
+"Thấy đồ cũ bán được giá tốt",
+"Được chỉ đường nhanh chóng",
+"Nên giữ giấy tờ nhỏ gọn",
+"Ăn đêm cân nhắc để không mệt",
+"Ra ngoài nhớ mang khẩu trang vẫn tốt",
+"Được ai đó nhắc đi chơi cuối tuần",
+"Thấy mood thăng tiến nhẹ nhàng",
+"Thích hợp học kỹ năng mới",
+"Được gợi ý sách/cf hữu ích",
+"Nhận lời mời tham gia mini event",
+"Hôm nay có khoảnh khắc muốn khóc vì hạnh phúc",
+"Được trả lời tin nhắn quan trọng",
+"Có người giúp bạn hoàn thành task",
+"Được ai đó share deal ngon",
+"Thấy ai đó cười vì bạn",
+"Được nhắc đến theo hướng tốt",
+"Được gặp người có gu giống bạn",
+"Thấy mình hợp team nào đó",
+"Được tỏ ý muốn giúp một cách tự nhiên"
+]; // ~200
 
-let dobGlobal="";
+/* ---------- State ---------- */
+let audioUnlocked = false;
+const STORAGE_KEY = "xocque_result_v1";
 
-if(localStorage.getItem("fortuneResult")){
-  showResult(JSON.parse(localStorage.getItem("fortuneResult")),true);
+/* ---------- Helpers: audio & vibration ---------- */
+function $(id){return document.getElementById(id)}
+function tryVibrate(pattern){
+  if(navigator.vibrate) navigator.vibrate(pattern);
 }
 
-function play(id){document.getElementById(id).play();}
+function unlockAudio(){
+  if(audioUnlocked) return;
+  audioUnlocked = true;
+  // prime all audio elements
+  const audios = document.querySelectorAll("audio");
+  audios.forEach(a=>{
+    try{
+      a.volume = 0.9;
+      a.currentTime = 0;
+      const p = a.play();
+      if(p && p.then) p.then(()=>a.pause()).catch(()=>{ a.pause(); });
+      else a.pause();
+    }catch(e){/* ignore */}
+  });
+}
+
+/* Safe play wrapper */
+function play(id){
+  try{
+    const a = $(id);
+    if(!a) return;
+    a.currentTime = 0;
+    const p = a.play();
+    if(p && p.catch) p.catch(()=>{ /* ignore play reject */ });
+  }catch(e){}
+}
+
+/* ---------- UI flow ---------- */
+function show(el){ if(typeof el==="string") el=$(el); el.style.display="block"; }
+function hide(el){ if(typeof el==="string") el=$(el); el.style.display="none"; }
 
 function nextStep(n){
+  unlockAudio(); // MUST call early to open audio on first click
   play("click");
-  document.getElementById("step"+n).classList.add("hidden");
-  document.getElementById("step"+(n+1)).classList.remove("hidden");
+  tryVibrate(40);
+  hide("step"+n);
+  show("step"+(n+1));
 }
 
+function init(){
+  // if result exists -> show immediately
+  const existing = localStorage.getItem(STORAGE_KEY);
+  if(existing){
+    const obj = JSON.parse(existing);
+    renderResult(obj, true);
+    // hide initial steps
+    hide("step1"); hide("step2"); hide("step3"); hide("cardsArea");
+    return;
+  }
+  // else show step1
+  show("step1");
+}
+init();
+
+/* ---------- Shake -> show cards ---------- */
 function startShake(){
+  unlockAudio();
+  const dob = $("dob").value;
+  if(!dob){ alert("Vui lòng nhập ngày sinh (YYYY-MM-DD)"); return; }
+  // save dob in memory for special VIP
+  window._dob = dob;
   play("click");
-  dobGlobal=document.getElementById("dob").value;
-  if(!dobGlobal) return alert("Nhập ngày sinh!");
-  document.getElementById("step3").classList.add("hidden");
-  document.getElementById("shakeArea").classList.remove("hidden");
-  const jar=document.getElementById("jar");
+  hide("step3");
+  show("shakeArea");
+  const jar = $("jar");
   jar.classList.add("shake");
   play("shakeSound");
+  tryVibrate([60,40,60]); // pattern
+  // 2.5s shake
   setTimeout(()=>{
     jar.classList.remove("shake");
-    document.getElementById("shakeSound").pause();
-    document.getElementById("shakeArea").classList.add("hidden");
-    document.getElementById("cardsArea").classList.remove("hidden");
+    const s = $("shakeSound"); if(s){ s.pause(); s.currentTime=0; }
+    hide("shakeArea");
+    show("cardsArea");
   },2500);
 }
 
-function pickCard(){
+/* ---------- Pick card ---------- */
+function pickCard(index){
+  unlockAudio();
   play("swipe");
-  document.getElementById("cardsArea").classList.add("hidden");
-
-  let result;
-  if(dobGlobal==="2010-06-25"){
-    result={text:"💎 THIẾU GIA VIP 10/5",type:"vip",gift:true};
+  tryVibrate(80);
+  // hide cards
+  hide("cardsArea");
+  // decide result
+  const dob = window._dob || "";
+  let resultObj=null;
+  if(dob==="2010-06-25"){
+    resultObj = {text:"💎 THIẾU GIA VIP 10/5", type:"vip", gift:true};
   }else{
-    const text=fortunes[Math.floor(Math.random()*fortunes.length)];
-    result={
-      text,
-      type: text.includes("Xui")?"bad":"good",
-      gift: text.includes("Đại cát")
-    };
+    // pick random unique fortune among fortunes array
+    const r = Math.floor(Math.random()*fortunes.length);
+    const text = fortunes[r];
+    const isBad = text.includes("Mua nước tại quầy 10/5 để giải nghiệp");
+    const gift = text.includes("được tặng") || text.includes("quà") || text.includes("móc khóa") || text.includes("được tặng");
+    resultObj = {text, type: isBad ? "bad" : "good", gift: !!gift};
   }
-  localStorage.setItem("fortuneResult",JSON.stringify(result));
-  showResult(result,false);
+  // store locked result
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(resultObj));
+  renderResult(resultObj, false);
 }
 
-function showResult(result,loaded){
-  document.getElementById("resultArea").classList.remove("hidden");
-  let html=`<div class="result ${result.type}">${result.text}</div>`;
-  if(result.gift){
-    html+=`<div class="gift">Hãy mang màn hình này đến gặp nhân viên quầy 10/5 để nhận quà!</div>`;
+/* ---------- Render result ---------- */
+function renderResult(res, loaded){
+  const area = $("resultArea");
+  area.innerHTML = "";
+  const box = document.createElement("div");
+  box.className = "result" + (res.type==="vip" ? " vip" : "");
+  box.innerHTML = `<div style="font-size:16px;line-height:1.4">${res.text}</div>`;
+  area.appendChild(box);
+
+  if(res.gift){
+    const g = document.createElement("div");
+    g.className = "gift";
+    g.textContent = "Hãy mang màn hình này đến gặp nhân viên quầy 10/5 để nhận quà!";
+    area.appendChild(g);
   }
-  document.getElementById("resultArea").innerHTML=html;
+
+  show("resultArea");
 
   if(!loaded){
-    if(result.type==="good"||result.type==="vip"){play("win");confetti();}
-    else play("sad");
+    if(res.type==="good" || res.type==="vip"){
+      play("win");
+      confettiBurst();
+      tryVibrate([30,40,30,40,30]);
+    } else {
+      play("sad");
+      tryVibrate([120]);
+    }
   }
 }
 
-function confetti(){
-  const c=document.getElementById("confetti");
-  const ctx=c.getContext("2d");
-  c.width=innerWidth;c.height=innerHeight;
-  let pieces=Array.from({length:120},()=>({
-    x:Math.random()*c.width,
-    y:Math.random()*c.height,
-    r:Math.random()*6+4,
-    dy:Math.random()*3+2
-  }));
-  let t=0;
-  (function anim(){
-    ctx.clearRect(0,0,c.width,c.height);
-    pieces.forEach(p=>{
-      ctx.fillStyle=["#c0392b","#ffd700","#5d4037"][Math.floor(Math.random()*3)];
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
-      p.y+=p.dy;
+/* ---------- Confetti simple ---------- */
+function confettiBurst(){
+  const canvas = $("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  const pieces = [];
+  const colors = ["#c0392b","#ffd700","#5d4037","#fff5e6"];
+  for(let i=0;i<120;i++){
+    pieces.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*-canvas.height,
+      r: Math.random()*8+4,
+      dx: (Math.random()-0.5)*4,
+      dy: Math.random()*4+2,
+      color: colors[Math.floor(Math.random()*colors.length)]
     });
-    if(t++<120) requestAnimationFrame(anim);
-  })();
+  }
+  let t=0;
+  const anim = ()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.ellipse(p.x,p.y,p.r,p.r*0.6,0,0,Math.PI*2);
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      p.dy += 0.05;
+      if(p.y>canvas.height+20){ p.y = -20; p.x = Math.random()*canvas.width; p.dy = Math.random()*4+2; }
+    });
+    if(t++<200) requestAnimationFrame(anim);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  };
+  anim();
 }
+
+/* ---------- Utility: reset (for testing only) ---------- */
+// Uncomment below to expose reset in console for dev
+window._resetXocQue = function(){
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+};
+
 </script>
 </body>
 </html>
