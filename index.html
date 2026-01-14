@@ -197,19 +197,40 @@
         const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
         const audioShake = new Audio('https://www.myinstants.com/media/sounds/skeleton-rattling.mp3');
         audioShake.loop = true;
-        const audioFlip = new Audio('https://www.orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
+        const audioFlip = new Audio('https://orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
         const audioWin = new Audio('https://www.myinstants.com/media/sounds/final-fantasy-vii-victory-fanfare-1.mp3');
         const audioSad = new Audio('https://www.myinstants.com/media/sounds/tf_nemesis.mp3');
         const audioVip = new Audio('https://www.myinstants.com/media/sounds/celebration.mp3');
 
+        // Mảng tất cả audio để unlock
+        const allAudios = [audioClick, audioShake, audioFlip, audioWin, audioSad, audioVip];
+
         // Mở khóa âm thanh bằng dummy play/pause
         function unlockAudio(audio) {
-            audio.play().then(() => audio.pause()).catch(() => {});
+            const promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }).catch(error => {
+                    console.log('Unlock audio failed:', error);
+                });
+            }
+        }
+
+        // Unlock tất cả audio
+        function unlockAllAudios() {
+            allAudios.forEach(unlockAudio);
         }
 
         // Chơi âm thanh an toàn
         function playAudio(audio) {
-            audio.play().catch(() => console.log('Audio play failed, but continuing...'));
+            const promise = audio.play();
+            if (promise !== undefined) {
+                promise.catch(error => {
+                    console.log('Audio play failed:', error);
+                });
+            }
         }
 
         // Rung
@@ -227,38 +248,214 @@
             showResult(fortuneData.result, fortuneData.type);
         }
 
-        // Mảng 200 quẻ (ví dụ, mở rộng thực tế)
+        // Mảng 200 quẻ không trùng (văn phong Gen Z, hài hước, đời thường, 100 vui/ổn, 50 bình thường, 50 xui với lời khuyên)
         const fortunes = [
-            // Quẻ ổn/vui (100 cái, ví dụ 5)
-            '2026 của bạn sẽ siêu chill, crush like post liên tục!',
-            'Năm mới tiền đầy túi, game rank lên pro!',
-            'Bạn sẽ crush thành công, date cafe free!',
-            'Học hành đỉnh cao, điểm 10 bay tùm lum!',
-            'Party tẹt ga, bạn bè quẩy max vol!',
+            // 100 quẻ vui/ổn
+            '2026 của bạn siêu đỉnh, crush rep story 24/7!',
+            'Năm mới ví dày cộm, shopping thoải mái không lo!',
+            'Crush tự động match, date night chill hết sẩy!',
+            'Học hành auto pass, điểm cao ngất ngưởng!',
+            'Party liên tục, bạn bè quẩy banh nóc!',
+            'Công việc lên level, sếp khen nức nở!',
+            'Sức khỏe peak, gym ra abs 6 múi!',
+            'Du lịch free, vé máy bay tự động về tay!',
+            'Game rank legend, team carry hết phần thiên hạ!',
+            'Ăn uống full combo, không lo tăng cân!',
+            'Social media viral, follower tăng vù vù!',
+            'Tình yêu ngọt ngào, không drama nào chen!',
+            'Tiền thưởng bất ngờ, ví reo hò vui vẻ!',
+            'Bạn bè loyal, không ai backstab!',
+            'Sleep schedule ổn, ngủ ngon như em bé!',
+            'Outfit slay, ai cũng quay đầu nhìn!',
+            'Kỹ năng mới unlock, pro hơn bao giờ hết!',
+            'Gia đình hạnh phúc, Tết sum vầy ấm cúng!',
+            'Pet siêu cute, ngày nào cũng vui!',
+            'Music playlist hit, vibe mãi không chán!',
+            '2026 glow up, bạn đẹp trai/xinh gái hơn bao giờ!',
+            'Công nghệ mới, gadget full option!',
+            'Ăn chay healthy, body fit như model!',
+            'Sách hay đọc ngấu, kiến thức đầy đầu!',
+            'Yoga chill, stress bay biến hết!',
+            'Cafe date, gặp gỡ crush lý tưởng!',
+            'Freelance job, tiền về như nước!',
+            'Concert idol, vé VIP tự nhiên có!',
+            'Bóng đá thắng kèo, ăn mừng tưng bừng!',
+            'Nấu ăn pro, bạn bè khen ngon miệng!',
+            'Xe mới tậu, chạy êm ru!',
+            'Học ngoại ngữ, nói vanh vách!',
+            'Volunteer vui, giúp người giúp ta!',
+            'Garden xinh, hoa nở rộ quanh năm!',
+            'Podcast nghe hay, kiến thức tăng vèo!',
+            'Makeup slay, selfie đẹp lung linh!',
+            'Fitness challenge, body transform đỉnh!',
+            'Movie marathon, không phim dở nào!',
+            'Shopping sale, săn deal siêu hời!',
+            'Friendship goal, nhóm chat xôm tụ!',
+            'Coding skill up, dự án thành công!',
+            'Dance cover, view triệu like!',
+            'Foodie tour, ăn sập các quán hot!',
+            'Meditation, tâm hồn bình yên!',
+            'Investment lời to, giàu lên thấy rõ!',
+            'Petition win, thay đổi tích cực!',
+            'Art drawing, tranh đẹp như pro!',
+            'Singing talent, voice hay mê ly!',
+            'Travel vlog, follower mê mẩn!',
+            'DIY project, nhà cửa xinh xắn!',
+            'Gaming tournament, win prize lớn!',
+            'Beauty routine, da đẹp không tì vết!',
+            'Book club, thảo luận sôi nổi!',
+            'Sports day, thắng giải liên tục!',
+            'Cooking class, học món mới đỉnh!',
+            'Photography, ảnh đẹp như studio!',
+            'Volunteer abroad, trải nghiệm đỉnh cao!',
+            'Language exchange, bạn bè quốc tế!',
+            'Startup idea, pitch thành công!',
+            'Concert festival, quẩy hết mình!',
+            'Hiking adventure, view đẹp mê hồn!',
+            'Baking cake, ngon như tiệm!',
+            'Fashion show, style unique!',
+            'Podcast host, listener tăng nhanh!',
+            'Gym buddy, motivate lẫn nhau!',
+            'Movie review, blog hot hit!',
+            'Pet grooming, cute hơn bao giờ!',
+            'Investment club, share tip hay!',
+            'Art exhibition, tranh bán chạy!',
+            'Singing contest, win big!',
+            'Travel solo, tự do khám phá!',
+            'DIY gift, bạn bè cảm động!',
+            'Gaming stream, donate đầy túi!',
+            'Beauty hack, tip viral!',
+            'Book writing, publish thành công!',
+            'Sports league, team vô địch!',
+            'Cooking vlog, subscribe đông!',
+            'Photo contest, win prize!',
+            'Volunteer event, impact lớn!',
+            'Language app, level up nhanh!',
+            'Startup funding, investor đổ xô!',
+            'Concert ticket, front row!',
+            'Hiking group, bạn mới vui vẻ!',
+            'Baking contest, judge khen!',
+            'Fashion blog, collab brand!',
+            'Podcast interview, guest nổi tiếng!',
+            'Gym challenge, record mới!',
+            'Movie premiere, red carpet!',
+            'Pet show, prize cute!',
+            'Investment return, profit max!',
+            'Art class, skill pro!',
+            'Singing cover, viral hit!',
+            'Travel blog, sponsor tour!',
+            'DIY home, decor xinh!',
+            'Gaming event, meet idol!',
+            'Beauty tutorial, like triệu!',
+            'Book launch, best seller!',
+            'Sports match, score goal!',
+            'Cooking book, recipe hot!',
+            'Photo exhibition, crowd đông!',
 
-            // Thêm 95 cái tương tự... (bạn cần mở rộng để đủ 100)
+            // 50 quẻ bình thường
+            '2026 ổn định, không gì bất ngờ.',
+            'Cuộc sống đều đều, chill hàng ngày.',
+            'Công việc ok, lương đúng hạn.',
+            'Bạn bè vẫn vậy, không thay đổi.',
+            'Sức khỏe bình thường, không ốm nặng.',
+            'Học hành trung bình, pass nhẹ nhàng.',
+            'Tình yêu ổn, không drama lớn.',
+            'Gia đình êm ấm, không cãi vã.',
+            'Tiền bạc đủ xài, không dư không thiếu.',
+            'Du lịch ngắn ngày, relax cơ bản.',
+            'Game chơi vui, rank ổn định.',
+            'Ăn uống thường, không tăng cân.',
+            'Social media bình thường, like đều.',
+            'Sleep ok, ngủ đủ giấc.',
+            'Outfit basic, không nổi bật.',
+            'Kỹ năng duy trì, không up không down.',
+            'Party nhỏ, vui vừa phải.',
+            'Pet khỏe mạnh, chơi đùa hàng ngày.',
+            'Music nghe quen, không hit mới.',
+            'Glow up nhẹ, nhìn ổn hơn tí.',
+            'Công nghệ cũ, vẫn dùng tốt.',
+            'Ăn healthy bình thường, body ok.',
+            'Sách đọc đều, kiến thức thêm.',
+            'Yoga cơ bản, thư giãn thôi.',
+            'Cafe solo, chill một mình.',
+            'Freelance ổn, job đều đều.',
+            'Concert online, xem free.',
+            'Bóng đá xem, không cá cược.',
+            'Nấu ăn hàng ngày, không đặc sắc.',
+            'Xe cũ, chạy êm.',
+            'Học ngoại ngữ chậm, nhưng tiến bộ.',
+            'Volunteer địa phương, giúp vui.',
+            'Garden nhỏ, tưới cây hàng tuần.',
+            'Podcast nghe, kiến thức cơ bản.',
+            'Makeup daily, không cầu kỳ.',
+            'Fitness đều, không thay đổi.',
+            'Movie xem cũ, không mới mẻ.',
+            'Shopping thường, không sale lớn.',
+            'Friendship ổn, chat đều.',
+            'Coding basic, project nhỏ.',
+            'Dance hobby, vui thôi.',
+            'Foodie ăn quen, không thử mới.',
+            'Meditation ngắn, relax ok.',
+            'Investment ổn, không lời lớn.',
+            'Petition tham gia, không win.',
+            'Art doodle, không pro.',
+            'Singing shower, không contest.',
+            'Travel gần, không xa.',
+            'DIY simple, không phức tạp.',
+            'Gaming casual, không tournament.',
 
-            // Quẻ bình thường (50 cái, ví dụ 5)
-            '2026 ổn áp, không drama gì to tát.',
-            'Cuộc sống bình yên, Netflix chill hàng ngày.',
-            'Công việc đều đều, lương về đúng hạn.',
-            'Bạn bè vẫn thế, không ai ghost bạn.',
-            'Sức khỏe ok, không ốm vặt nữa.',
-
-            // Thêm 45...
-
-            // Quẻ xui (49 cái, ví dụ 5, kèm lời khuyên)
-            '2026 hơi xui, dễ bị ghost bởi crush. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Tiền tiêu vèo vèo, ví mỏng teo. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Học hành trục trặc, điểm thấp tí. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Bạn bè drama, cãi vã linh tinh. Mua nước tại quầy 10/5 để giải nghiệp!',
+            // 50 quẻ xui (bắt buộc kèm lời khuyên)
+            '2026 hơi xui, crush ghost liên tục. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Tiền bay vèo, ví teo lại. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Học hành trễ nãi, điểm thấp. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Bạn bè drama, cãi nhau um sùm. Mua nước tại quầy 10/5 để giải nghiệp!',
             'Sức khỏe lẹt đẹt, mệt mỏi thường. Mua nước tại quầy 10/5 để giải nghiệp!',
-
-            // Thêm 44...
-
-            // Một số có quà (tích hợp random)
+            'Công việc lag, deadline dí. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Tình yêu flop, date fail. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Gia đình nhỏ xích mích. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Du lịch hỏng, mưa suốt. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Game thua streak, rank drop. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Ăn uống ngộ độc nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Social media unfollow. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Sleep rối loạn, mất ngủ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Outfit fail, mặc xấu. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Kỹ năng stuck, không tiến. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Party flop, ít người. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Pet ốm nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Music nghe chán. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Glow down, nhìn mệt. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Công nghệ hỏng, lag máy. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Ăn healthy fail, tăng cân. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Sách đọc quên. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Yoga chấn thương nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Cafe date hủy. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Freelance no job. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Concert hủy show. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Bóng đá thua kèo. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Nấu ăn cháy khét. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Xe hỏng giữa đường. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Học ngoại ngữ quên từ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Volunteer mệt mỏi. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Garden úa lá. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Podcast boring. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Makeup dị ứng. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Fitness chấn thương. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Movie flop. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Shopping lỗ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Friendship fade. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Coding bug. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Dance step wrong. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Foodie ngộ độc. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Meditation distract. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Investment lỗ. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Petition fail. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Art mess up. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Singing off key. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Travel delay. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'DIY fail. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Gaming lag. Mua nước tại quầy 10/5 để giải nghiệp!',
+            'Beauty acne. Mua nước tại quầy 10/5 để giải nghiệp!'
         ];
-        // Để đủ 200, mở rộng mảng. Hiện dùng placeholder.
 
         // Quẻ VIP
         const vipFortune = '💎 THIẾU GIA VIP 10/5! Quà đặc biệt chờ bạn tại quầy!';
@@ -271,7 +468,7 @@
             const index = Math.floor(Math.random() * fortunes.length);
             const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
             let result = fortunes[index];
-            // Random thêm quà cho một số quẻ (ví dụ 10% cơ hội)
+            // Random thêm quà cho một số quẻ (10% cơ hội nếu không xui)
             if (Math.random() < 0.1 && type !== 'bad') {
                 result += ' Nhận móc khóa quà từ 10/5!';
             }
@@ -350,15 +547,15 @@
 
         // Event listeners
         document.getElementById('confirm1').addEventListener('click', () => {
+            unlockAllAudios(); // Unlock tất cả trên click đầu
             playAudio(audioClick);
-            unlockAudio(audioShake); // Mở khóa
             vibrate(50);
             showScreen('screen2');
         });
 
         document.getElementById('confirm2').addEventListener('click', () => {
+            unlockAllAudios(); // Unlock lại để chắc chắn
             playAudio(audioClick);
-            unlockAudio(audioFlip); // Mở khóa thêm
             vibrate(50);
             showScreen('screen-birthdate');
         });
@@ -422,6 +619,9 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // Thêm event để unlock audio trên touchstart (dành cho mobile)
+        document.addEventListener('touchstart', unlockAllAudios, { once: true });
     </script>
 </body>
 </html>
