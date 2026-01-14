@@ -19,6 +19,7 @@
             padding: 20px;
             font-size: 18px;
             line-height: 1.5;
+            position: relative; /* Để credit fixed */
         }
         .container {
             max-width: 100%;
@@ -61,27 +62,29 @@
             display: block;
             opacity: 1;
         }
-        /* Ống quẻ */
+        /* Ống quẻ - lắc mạnh hơn */
         #jar {
-            width: 150px;
-            height: 200px;
-            background: url('jar.png') center/contain no-repeat; /* Giả định file jar.png */
+            width: 180px;
+            height: 240px;
+            background: url('jar.png') center/contain no-repeat;
             margin: 40px auto;
             transition: transform 0.1s ease-in-out;
             will-change: transform;
         }
-        .shaking { animation: shake 0.3s infinite cubic-bezier(0.36, 0.07, 0.19, 0.97); }
-        @keyframes shake {
+        .shaking { 
+            animation: shake-strong 0.15s infinite cubic-bezier(0.36, 0.07, 0.19, 0.97); 
+        }
+        @keyframes shake-strong {
             0% { transform: translate(0, 0) rotate(0deg); }
-            10% { transform: translate(-2px, -1px) rotate(-2deg); }
-            20% { transform: translate(2px, 1px) rotate(2deg); }
-            30% { transform: translate(-1px, 2px) rotate(-1deg); }
-            40% { transform: translate(1px, -2px) rotate(1deg); }
-            50% { transform: translate(-3px, 0) rotate(-3deg); }
-            60% { transform: translate(3px, 1px) rotate(3deg); }
-            70% { transform: translate(-2px, -1px) rotate(-2deg); }
-            80% { transform: translate(2px, 2px) rotate(2deg); }
-            90% { transform: translate(-1px, -2px) rotate(-1deg); }
+            10% { transform: translate(-5px, -8px) rotate(-5deg); }
+            20% { transform: translate(8px, -3px) rotate(6deg); }
+            30% { transform: translate(-6px, 7px) rotate(-4deg); }
+            40% { transform: translate(7px, -6px) rotate(5deg); }
+            50% { transform: translate(-10px, 0) rotate(-8deg); }
+            60% { transform: translate(10px, 5px) rotate(8deg); }
+            70% { transform: translate(-8px, -5px) rotate(-6deg); }
+            80% { transform: translate(6px, 8px) rotate(6deg); }
+            90% { transform: translate(-7px, -7px) rotate(-5deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
         /* Que quẻ */
@@ -152,6 +155,16 @@
             font-style: italic;
             color: #c0392b;
         }
+        /* Credit nhỏ bên trái dưới */
+        #credit {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #5d4037;
+            opacity: 0.6;
+            z-index: 10;
+        }
         /* Confetti canvas */
         #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
     </style>
@@ -178,9 +191,8 @@
             <button id="cast">Gieo Quẻ</button>
         </div>
 
-        <!-- Màn lắc ống quẻ -->
+        <!-- Màn lắc ống quẻ (không chữ nữa, chỉ jar lắc mạnh) -->
         <div id="screen-jar" class="screen">
-            <p>Đang gieo quẻ...</p>
             <div id="jar"></div>
         </div>
 
@@ -201,10 +213,13 @@
         </div>
     </div>
 
+    <!-- Credit nhỏ bên trái dưới -->
+    <div id="credit">dev by hai duong</div>
+
     <canvas id="confetti-canvas" width="300" height="300"></canvas>
 
     <script>
-        // Âm thanh
+        // Âm thanh (thêm âm thanh lách cách gỗ mạnh hơn)
         const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
         const audioShake = new Audio('https://orangefreesounds.com/wp-content/uploads/2021/03/Wooden-rattle-sound-effect.mp3?_=1');
         audioShake.loop = true;
@@ -249,7 +264,7 @@
             showScreen('screen1');
         }
 
-        // 200 quẻ đầy đủ (Gen Z hài hước, không trùng)
+        // 200 quẻ đầy đủ (giữ nguyên như trước)
         const fortunes = [
             // 100 quẻ vui/ổn (good)
             '2026 của bạn siêu đỉnh, crush rep story 24/7!',
@@ -561,8 +576,8 @@
             vibrate(50);
             showScreen('screen-jar');
             document.getElementById('jar').classList.add('shaking');
-            playAudio(audioShake);
-            vibrate([100, 50, 100, 50, 100]);
+            playAudio(audioShake); // Tiếng lách cách gỗ mạnh
+            vibrate([100, 50, 100, 50, 100, 50, 100, 50, 100]); // Rung mạnh hơn
             setTimeout(() => {
                 document.getElementById('jar').classList.remove('shaking');
                 audioShake.pause();
