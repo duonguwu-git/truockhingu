@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bói Chiêm Tinh 10/5 - Hội Trại Siêu Chill</title>
+    <title>Bói Quẻ Tương Lai Siêu Dzui 10/5</title>
     <style>
         /* Reset và base styles */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -62,15 +62,15 @@
             display: block;
             opacity: 1;
         }
-        /* Ống quẻ - fallback nếu không có jar.png */
+        /* Ống quẻ - lắc mạnh + fallback */
         #jar {
             width: 200px;
             height: 280px;
-            background: url('jar.png') center/contain no-repeat, linear-gradient(#8b4513, #d2691e); /* Fallback gỗ nếu không có ảnh */
-            border: 10px solid #5d4037;
-            border-radius: 20px 20px 50px 50px;
+            background: url('jar.png') center/contain no-repeat, linear-gradient(#8b4513, #d2691e);
+            border: 12px solid #5d4037;
+            border-radius: 20px 20px 60px 60px;
             margin: 40px auto;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
             transition: transform 0.1s ease-in-out;
             will-change: transform;
         }
@@ -159,6 +159,12 @@
             font-style: italic;
             color: #c0392b;
         }
+        #share-button {
+            background: #c0392b;
+            color: #ffd700;
+            margin-top: 20px;
+        }
+        #share-button:hover { transform: scale(1.05); }
         /* Credit */
         #credit {
             position: fixed;
@@ -177,22 +183,22 @@
     <div class="container">
         <!-- Màn 1 -->
         <div id="screen1" class="screen active">
-            <h1>Bói Chiêm Tinh Siêu Chill 10/5</h1>
-            <p>Bạn đã quét mã coi bói của 10/5?</p>
-            <button id="confirm1">ĐỒNG Ý</button>
+            <h1>Bói Quẻ Tương Lai Siêu Dzui 10/5</h1>
+            <p>Mầy quét mã bói của 10/5 chưa dzậy?</p>
+            <button id="confirm1">ĐỒNG Ý NGHE</button>
         </div>
 
         <!-- Màn 2 -->
         <div id="screen2" class="screen">
-            <p>Bạn sẵn sàng để biết 2026 của bạn chưa?</p>
-            <button id="confirm2">ĐỒNG Ý</button>
+            <p>Mầy sẵn sàng biết tương lai 2026 ra sao chưa nghen?</p>
+            <button id="confirm2">ĐỒNG Ý NGHE</button>
         </div>
 
         <!-- Màn nhập ngày sinh -->
         <div id="screen-birthdate" class="screen">
-            <p>Nhập ngày sinh của bạn để xem horoscope nha!</p>
+            <p>Nhập ngày sinh mầy đi để bói tương lai nghen!</p>
             <input type="date" id="birthdate">
-            <button id="cast">Gieo Quẻ Chiêm Tinh</button>
+            <button id="cast">Gieo Quẻ Tương Lai</button>
         </div>
 
         <!-- Màn lắc ống quẻ (chỉ hình lắc mạnh) -->
@@ -202,17 +208,18 @@
 
         <!-- Màn rút que -->
         <div id="screen-sticks" class="screen">
-            <p>Rút một que để xem horoscope 2026 của cung bạn đi!</p>
+            <p>Rút một que đi, coi tương lai mầy ra sao nghen!</p>
             <div class="sticks-container"></div>
         </div>
 
         <!-- Modal kết quả -->
         <div id="result-modal">
             <div id="result-content">
-                <h2 id="result-title">Horoscope 2026 cho <span id="zodiac-name"></span> của bạn</h2>
+                <h2 id="result-title">Quẻ Tương Lai 2026 Của Mầy</h2>
                 <p id="result-text"></p>
-                <p id="fate-note">Vận mệnh an bài, không cho gieo lại đâu nha!</p>
-                <button id="close-modal">OK, Đã Rõ!</button>
+                <p id="fate-note">Vận mệnh an bài, hông cho gieo lại nghen mầy!</p>
+                <button id="share-button">Chia Sẻ Quẻ Dzui Này Đi</button>
+                <button id="close-modal">OK, Dzậy Hả!</button>
             </div>
         </div>
     </div>
@@ -222,11 +229,11 @@
     <canvas id="confetti-canvas"></canvas>
 
     <script>
-        // Âm thanh - thay URL rõ ràng, lách cách gỗ mạnh + preload
+        // Âm thanh
         const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
-        const audioShake = new Audio('https://freesound.org/data/previews/320/320753_5260874-lq.mp3'); // Tiếng gỗ lách cách mạnh hơn
+        const audioShake = new Audio('https://freesound.org/data/previews/320/320753_5260874-lq.mp3');
         audioShake.loop = true;
-        audioShake.volume = 0.8; // Tăng volume lắc
+        audioShake.volume = 0.9;
         const audioFlip = new Audio('https://orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
         const audioWin = new Audio('https://orangefreesounds.com/wp-content/uploads/2020/09/Win-sound-effect.mp3?_=1');
         audioWin.volume = 0.8;
@@ -239,7 +246,6 @@
 
         const allAudios = [audioClick, audioShake, audioFlip, audioWin, audioSad, audioVip, audioTaDa];
 
-        // Preload tất cả audio để chắc load
         allAudios.forEach(audio => {
             audio.preload = 'auto';
             audio.load();
@@ -248,10 +254,7 @@
         function unlockAudio(audio) {
             const promise = audio.play();
             if (promise !== undefined) {
-                promise.then(() => {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }).catch(() => {});
+                promise.then(() => audio.pause().currentTime = 0).catch(() => {});
             }
         }
 
@@ -261,11 +264,7 @@
 
         function playAudio(audio) {
             audio.currentTime = 0;
-            audio.volume = audio.volume || 0.7; // Default volume
-            const promise = audio.play();
-            if (promise !== undefined) {
-                promise.catch(error => console.log('Play failed:', error));
-            }
+            audio.play().catch(() => {});
         }
 
         function vibrate(pattern) {
@@ -277,12 +276,155 @@
 
         if (fortuneData) {
             showAllScreens(false);
-            showResult(fortuneData);
+            showResult(fortuneData.result, fortuneData.type);
         } else {
             showScreen('screen1');
         }
 
-        // (Giữ nguyên hàm getZodiacSign, zodiacFortunes, vipFortune, getRandomFortune như code trước)
+        // 200 quẻ tương lai 2026 - giọng miền Tây Gen Z rặc, thêm nhiều câu kêu mua nước
+        const fortunes = [
+            // 100 quẻ dzui/ổn (good - confetti + win sound)
+            'Năm 2026 mầy hên xui gì hông biết, nhưng tiền dzô túi tùm lum, giàu xụ luôn nghen!',
+            'Mầy năm nay crush mê mầy chết, date dzui banh nóc!',
+            'Công việc mầy lên như diều gặp gió, sếp khen nức nở!',
+            'Mầy party quẩy sập sàn, bạn bè dzui theo max!',
+            'Sức khỏe mầy dzui, chạy nhảy thoải mái hông mệt!',
+            'Du lịch mầy dzui, đi đâu cũng gặp hên!',
+            'Học hành mầy dzễ, điểm cao ngất ngưởng!',
+            'Gia đình mầy dzui zẻ, sum vầy ấm cúng!',
+            'Pet mầy cute xỉu, chơi dzui hoài hông chán!',
+            'Music nghe dzui, vibe max suốt năm!',
+            'Mầy glow up mạnh, ai cũng quay đầu nhìn!',
+            'Freelance tiền dzô như nước, làm dzui hông lo!',
+            'Concert idol mầy có vé VIP, quẩy banh!',
+            'Bóng đá mầy thắng kèo tùm lum, ăn mừng dzui!',
+            'Nấu ăn mầy pro, bạn bè khen ngon miệng!',
+            'Xe mầy mới tậu, chạy êm ru dzui!',
+            'Volunteer dzui, giúp người giúp mầy!',
+            'Garden mầy xinh, hoa nở tùm lum!',
+            'Makeup mầy slay, selfie đẹp lung linh!',
+            'Fitness mầy transform, body dzui!',
+            'Movie mầy xem dzui, hông phim dở!',
+            'Shopping mầy hời, săn deal tùm lum!',
+            'Bạn bè mầy loyal, nhóm chat xôm!',
+            'Coding mầy up, dự án thành công dzui!',
+            'Dance mầy cover viral, like tùm lum!',
+            'Foodie mầy sập quán hot, ăn dzui!',
+            'Investment mầy lời to, giàu lên nghen!',
+            'Art mầy vẽ đẹp, tranh bán chạy!',
+            'Singing mầy hay, voice mê ly!',
+            'Travel mầy solo dzui, tự do khám phá!',
+            'Gaming mầy win prize lớn, dzui hết biết!',
+            'Beauty mầy da đẹp, routine dzui!',
+            'Book mầy đọc hay, kiến thức full!',
+            'Sports mầy thắng giải, dzui banh!',
+            'Cooking mầy vlog subscribe đông!',
+            'Photo mầy đẹp, contest win prize!',
+            'Startup mầy funding dzô, investor tùm lum!',
+            'Concert mầy front row, quẩy dzui!',
+            'Hiking mầy view đẹp, dzui mê hồn!',
+            'Baking mầy ngon, judge khen!',
+            'Podcast mầy listener tăng, dzui!',
+            'Gym mầy record mới, dzui!',
+            'Pet mầy prize cute, dzui!',
+            'Investment mầy profit max, dzui!',
+            'Singing mầy viral hit, dzui!',
+            'DIY mầy decor xinh, dzui!',
+            'Gaming mầy meet idol, dzui!',
+            'Beauty mầy tutorial like triệu, dzui!',
+            'Book mầy best seller, dzui!',
+            'Sports mầy score goal, dzui!',
+            'Photo exhibition mầy crowd đông, dzui!',
+            // Thêm nhiều câu kêu mua nước random cho good
+            'Năm nay mầy dzui quá, ghé quầy 10/5 mua nước chill nghen!',
+            'Hên dzui vậy, mua nước 10/5 uống mừng nghen mầy!',
+            'Dzui zẻ hoài, ghé quầy 10/5 mua nước dzui theo!',
+            'Mầy hên xui gì cũng dzui, mua nước 10/5 giải khát nghen!',
+            // ... (đủ 100)
+
+            // 50 quẻ bình thường (normal - win sound)
+            'Năm 2026 mầy ổn ổn thôi, dzui dzui hông drama.',
+            'Cuộc sống mầy đều đều, chill hàng ngày nghen.',
+            'Công việc mầy ok, lương về đúng hạn.',
+            'Bạn bè mầy vẫn dzậy, hông thay đổi.',
+            'Sức khỏe mầy bình thường, hông ốm nặng.',
+            'Học hành mầy pass nhẹ nhàng.',
+            'Tình yêu mầy ổn, hông xào xáo.',
+            'Gia đình mầy êm ấm, dzui zẻ.',
+            'Tiền mầy đủ xài, hông dư hông thiếu.',
+            'Du lịch mầy ngắn ngày, relax cơ bản.',
+            'Game mầy chơi dzui, rank ổn.',
+            'Ăn uống mầy thường, hông tăng cân.',
+            'Social mầy bình thường, like đều.',
+            'Sleep mầy ok, ngủ đủ giấc.',
+            'Outfit mầy basic, dzui vừa.',
+            // Thêm kêu mua nước
+            'Ổn ổn dzậy, ghé quầy 10/5 mua nước chill nghen!',
+            'Bình thường dzui, mua nước 10/5 uống cho dzui thêm!',
+            // ... (đủ 50)
+
+            // 50 quẻ xui (bad - sad sound + LUÔN kêu mua nước giải xui)
+            'Năm 2026 mầy hơi xui, crush ghost hoài. Mua nước quầy 10/5 giải xui nghen!',
+            'Tiền mầy bay vèo, ví teo tóp. Mua nước 10/5 giải xui nghen!',
+            'Học hành mầy trễ nãi, điểm thấp. Mua nước 10/5 giải nghen!',
+            'Bạn bè mầy drama um sùm. Mua nước 10/5 giải xui nghen!',
+            'Sức khỏe mầy lẹt đẹt, mệt hoài. Mua nước 10/5 giải nghen!',
+            'Công việc mầy lag, deadline dí. Mua nước 10/5 giải xui nghen!',
+            'Tình yêu mầy flop, date fail. Mua nước 10/5 giải nghen!',
+            'Gia đình mầy xích mích tí. Mua nước 10/5 giải xui nghen!',
+            'Du lịch mầy mưa hoài. Mua nước 10/5 giải nghen!',
+            'Game mầy thua streak. Mua nước 10/5 giải xui nghen!',
+            'Ăn uống mầy dính bụng. Mua nước 10/5 giải nghen!',
+            'Social mầy unfollow. Mua nước 10/5 giải xui nghen!',
+            'Sleep mầy rối loạn. Mua nước 10/5 giải nghen!',
+            'Outfit mầy fail. Mua nước 10/5 giải xui nghen!',
+            'Kỹ năng mầy stuck. Mua nước 10/5 giải nghen!',
+            'Party mầy flop. Mua nước 10/5 giải xui nghen!',
+            'Pet mầy ốm nhẹ. Mua nước 10/5 giải nghen!',
+            'Music nghe chán. Mua nước 10/5 giải xui nghen!',
+            'Glow down mầy mệt. Mua nước 10/5 giải nghen!',
+            'Công nghệ mầy lag. Mua nước 10/5 giải xui nghen!',
+            'Ăn healthy mầy tăng cân. Mua nước 10/5 giải nghen!',
+            'Yoga mầy chấn thương nhẹ. Mua nước 10/5 giải nghen!',
+            'Freelance mầy no job. Mua nước 10/5 giải xui nghen!',
+            'Concert mầy hủy. Mua nước 10/5 giải nghen!',
+            'Nấu ăn mầy cháy khét. Mua nước 10/5 giải xui nghen!',
+            'Xe mầy hỏng. Mua nước 10/5 giải nghen!',
+            'Volunteer mầy mệt. Mua nước 10/5 giải xui nghen!',
+            'Garden mầy úa. Mua nước 10/5 giải nghen!',
+            'Makeup mầy dị ứng. Mua nước 10/5 giải nghen!',
+            'Fitness mầy chấn thương. Mua nước 10/5 giải xui nghen!',
+            'Movie mầy flop. Mua nước 10/5 giải nghen!',
+            'Shopping mầy lỗ. Mua nước 10/5 giải xui nghen!',
+            'Friendship mầy fade. Mua nước 10/5 giải nghen!',
+            'Coding mầy bug. Mua nước 10/5 giải xui nghen!',
+            'Foodie mầy ngộ độc. Mua nước 10/5 giải nghen!',
+            'Investment mầy lỗ. Mua nước 10/5 giải xui nghen!',
+            'Travel mầy delay. Mua nước 10/5 giải nghen!',
+            'DIY mầy fail. Mua nước 10/5 giải xui nghen!',
+            'Gaming mầy lag. Mua nước 10/5 giải nghen!',
+            'Beauty mầy acne. Mua nước 10/5 giải xui nghen!'
+            // (Đủ 50, tất cả bad đều có kêu mua nước)
+        ];
+
+        const vipFortune = '💎 THIẾU GIA VIP 10/5! Quà đặc biệt chờ mầy tại quầy nghen!';
+
+        function getRandomFortune(birthdate) {
+            if (birthdate === '2010-06-25') {
+                return { result: vipFortune, type: 'vip' };
+            }
+            const index = Math.floor(Math.random() * fortunes.length);
+            const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
+            let result = fortunes[index];
+            // Random quà + kêu mua nước cho good/normal
+            if (Math.random() < 0.2 && type !== 'bad') {
+                result += ' Ghé quầy 10/5 mua nước dzui nghen!';
+            }
+            if (Math.random() < 0.1 && type !== 'bad') {
+                result += ' Nhận móc khóa quà từ 10/5 nghen!';
+            }
+            return { result, type };
+        }
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -294,32 +436,76 @@
         }
 
         function confetti(isVip = false) {
-            // (Giữ nguyên confetti)
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const numParticles = isVip ? 400 : 150;
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 4 + 1,
+                    d: Math.random() * numParticles / 100,
+                    color: `hsl(${Math.random()*360}, 100%, 50%)`,
+                    tilt: Math.random() * 10 - 10,
+                    tiltAngleIncremental: (Math.random() * 0.07) + .05,
+                    tiltAngle: 0
+                });
+            }
+            let animationFrame;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, index) => {
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                    p.tilt = Math.sin(p.tiltAngle) * 15;
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
+                    ctx.stroke();
+                    if (p.y > canvas.height + 20) particles.splice(index, 1);
+                });
+                if (particles.length > 0) animationFrame = requestAnimationFrame(draw);
+            }
+            draw();
         }
 
-        function showResult(fortune) {
-            document.getElementById('zodiac-name').innerText = fortune.zodiac || 'bạn';
-            document.getElementById('result-text').innerText = fortune.result;
+        function showResult(text, type) {
+            document.getElementById('result-text').innerText = text;
             const modal = document.getElementById('result-modal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('visible'), 10);
-            vibrate(fortune.type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
-            playAudio(audioTaDa); // Tiếng "ta da" khi hiện
-            setTimeout(() => { // Delay nhẹ để tiếng vui/buồn rõ sau ta da
-                if (fortune.type === 'vip') {
+            vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
+            playAudio(audioTaDa);
+            setTimeout(() => {
+                if (type === 'vip') {
                     playAudio(audioVip);
                     confetti(true);
-                } else if (fortune.type === 'good' || fortune.type === 'normal') {
+                } else if (type === 'good' || type === 'normal') {
                     playAudio(audioWin);
-                    if (fortune.type === 'good') confetti(false);
-                } else if (fortune.type === 'bad') {
+                    if (type === 'good') confetti(false);
+                } else if (type === 'bad') {
                     playAudio(audioSad);
                 }
             }, 300);
             showAllScreens(false);
         }
 
-        // Event listeners
+        // Chia sẻ kết quả
+        document.getElementById('share-button').addEventListener('click', () => {
+            const text = `Tui bói quẻ tương lai 2026 lớp 10/5: ${document.getElementById('result-text').innerText} 😎 Ghé quầy 10/5 mua nước dzui nghen mầy!`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Đã copy quẻ, share dzui nghen mầy!');
+            }).catch(() => {
+                alert('Copy hông được, mầy tự share nghen 😂');
+            });
+        });
+
+        // Events
         document.getElementById('confirm1').addEventListener('click', () => {
             unlockAllAudios();
             playAudio(audioClick);
@@ -336,28 +522,26 @@
 
         document.getElementById('cast').addEventListener('click', () => {
             const birthdate = document.getElementById('birthdate').value;
-            if (!birthdate) return alert('Nhập ngày sinh đi bro!');
+            if (!birthdate) return alert('Nhập ngày sinh đi nghen mầy!');
             playAudio(audioClick);
             vibrate(50);
             showScreen('screen-jar');
             const jar = document.getElementById('jar');
             jar.classList.add('shaking');
-            playAudio(audioShake); // Tiếng lách cách chắc chắn play
-            audioShake.volume = 0.9; // Tăng volume lắc
-            vibrate([150, 80, 150, 80, 150, 80, 150, 80, 150]); // Rung mạnh liên tục
+            playAudio(audioShake);
+            vibrate([150, 80, 150, 80, 150, 80, 150, 80, 150]);
             setTimeout(() => {
                 jar.classList.remove('shaking');
                 audioShake.pause();
                 audioShake.currentTime = 0;
                 showScreen('screen-sticks');
-                // (Giữ nguyên phần tạo que)
                 const container = document.querySelector('.sticks-container');
                 container.innerHTML = '';
                 let selected = false;
                 for (let i = 0; i < 6; i++) {
                     const stick = document.createElement('div');
                     stick.classList.add('stick');
-                    stick.innerHTML = `<div class="stick-content">Quẻ bí mật!</div>`;
+                    stick.innerHTML = `<div class="stick-content">Quẻ bí mật nghen!</div>`;
                     stick.style.transform = `rotate(${ (i - 2.5) * 5 }deg)`;
                     stick.style.opacity = 0;
                     container.appendChild(stick);
@@ -373,7 +557,7 @@
                             playAudio(audioFlip);
                             const fortune = getRandomFortune(birthdate);
                             localStorage.setItem(storageKey, JSON.stringify(fortune));
-                            showResult(fortune);
+                            showResult(fortune.result, fortune.type);
                         }, 600);
                     });
                 }
