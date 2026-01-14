@@ -3,102 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bói Quẻ 10/5 - Phiên Bản Bất Tử Âm Thanh</title>
+    <title>Bói Quẻ 10/5 - Vercel Edition</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fff5e6; color: #5d4037; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff5e6; color: #5d4037; 
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; text-align: center; padding: 20px; overflow: hidden;
+            min-height: 100vh; text-align: center; padding: 20px;
         }
         .container {
-            width: 100%; max-width: 420px; background: #ffffff;
-            border-radius: 25px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            width: 100%; max-width: 400px; background: #fff;
+            border-radius: 30px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        h1 { color: #c0392b; margin-bottom: 20px; font-size: 24px; }
+        h1 { color: #c0392b; margin-bottom: 20px; }
         button {
             background: #ffd700; color: #5d4037; border: none; padding: 18px;
             font-size: 18px; border-radius: 15px; cursor: pointer;
-            margin: 10px 0; font-weight: bold; width: 100%;
+            margin: 10px 0; font-weight: bold; width: 100%; box-shadow: 0 4px 0 #d4af37;
         }
-        input[type="date"] { padding: 15px; font-size: 18px; border: 2px solid #c0392b; border-radius: 12px; width: 100%; margin: 20px 0; }
+        button:active { transform: translateY(2px); box-shadow: 0 2px 0 #d4af37; }
+        input[type="date"] { padding: 15px; font-size: 18px; border: 2px solid #c0392b; border-radius: 12px; width: 100%; margin: 15px 0; }
         .screen { display: none; }
-        .active { display: block; }
+        .active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
-        /* Bình quẻ */
-        #jar-container { position: relative; width: 180px; margin: 30px auto; cursor: pointer; }
+        /* Bình Quẻ */
+        #jar-wrapper { position: relative; width: 160px; margin: 20px auto; cursor: pointer; }
         #jar {
-            width: 150px; height: 220px; background: linear-gradient(#8b4513, #d2691e);
-            border: 8px solid #5d4037; border-radius: 20px 20px 50px 50px;
+            width: 140px; height: 210px; background: linear-gradient(#8b4513, #d2691e);
+            border: 6px solid #5d4037; border-radius: 20px 20px 50px 50px;
         }
         .shaking { animation: shake 0.1s infinite; }
         @keyframes shake { 0% {transform: rotate(0);} 25% {transform: rotate(-10deg);} 75% {transform: rotate(10deg);} }
 
         /* Thẻ quẻ */
-        .sticks-container { display: flex; justify-content: center; align-items: flex-end; height: 160px; margin: 20px 0; }
-        .stick { width: 25px; height: 130px; background: #8b4513; margin: 0 6px; border-radius: 8px 8px 0 0; cursor: pointer; transition: 0.3s; }
-        .stick.selected { transform: translateY(-80px); background: #ffd700; border: 2px solid #c0392b; }
+        .sticks-container { display: flex; justify-content: center; align-items: flex-end; height: 150px; margin: 20px 0; }
+        .stick { width: 22px; height: 120px; background: #8b4513; margin: 0 5px; border-radius: 8px 8px 0 0; cursor: pointer; transition: 0.3s; }
+        .stick.selected { transform: translateY(-70px); background: #ffd700; border: 2px solid #c0392b; }
 
         /* Kết quả */
-        #result-modal {
+        #modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 99; padding: 20px;
+            background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 100;
         }
-        #checkin-board { background: white; border: 5px solid #c0392b; border-radius: 20px; padding: 25px; width: 100%; }
-        #timer-box { background: #ff4757; color: white; padding: 10px; border-radius: 10px; margin: 15px 0; font-weight: bold; display: none; }
+        #board { background: white; border: 5px solid #c0392b; border-radius: 20px; padding: 25px; width: 90%; max-width: 350px; }
+        #timer { background: #ff4757; color: white; padding: 8px; border-radius: 8px; margin: 10px 0; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="screen1" class="screen active">
-            <h1>🔮 XIN QUẺ LỚP 10/5</h1>
-            <p>Khám phá vận mệnh & Nhận quà</p>
-            <button id="btn-start">BẮT ĐẦU XIN QUẺ</button>
+        <div id="s1" class="screen active">
+            <h1>🔮 QUẺ LÚC 10/5</h1>
+            <p>Bói quẻ nhận lộc nước!</p>
+            <button onclick="go('s2')">BẮT ĐẦU</button>
         </div>
 
-        <div id="screen-date" class="screen">
+        <div id="s2" class="screen">
+            <p>Bạn đã sẵn sàng diện kiến tương lai?</p>
+            <button onclick="go('s3')">TÔI ĐÃ SẴN SÀNG!</button>
+        </div>
+
+        <div id="s3" class="screen">
             <p>Chọn ngày sinh của bạn:</p>
-            <input type="date" id="birthdate">
-            <button id="btn-confirm-date">TIẾP TỤC</button>
+            <input type="date" id="date">
+            <button onclick="toJar()">XÁC NHẬN</button>
         </div>
 
-        <div id="screen-jar" class="screen">
-            <div id="jar-container">
+        <div id="s4" class="screen">
+            <div id="jar-wrapper" onclick="shakeJar()">
                 <div id="jar"></div>
             </div>
-            <p>🔥 <b>BẤM VÀO BÌNH ĐỂ LẮC</b> 🔥</p>
+            <p><b>👉 CHẠM VÀO BÌNH ĐỂ XÓC 👈</b></p>
         </div>
 
-        <div id="screen-sticks" class="screen">
-            <p>Chạm vào 1 quẻ để rút:</p>
-            <div class="sticks-container" id="sticks-box"></div>
+        <div id="s5" class="screen">
+            <p>Rút 1 quẻ định mệnh:</p>
+            <div class="sticks-container" id="box"></div>
         </div>
     </div>
 
-    <div id="result-modal">
-        <div id="checkin-board">
-            <h2 style="color: #c0392b">📜 THÁNH QUẺ CHỈ DẪN</h2>
-            <div id="fortune-msg" style="margin: 20px 0; font-size: 18px;"></div>
-            <div id="timer-box">⏳ HẠN LỘC: <span id="clock">15:00</span></div>
-            <div id="gift-box" style="background: #fff5e6; padding: 15px; border-radius: 10px; border: 2px dashed #c0392b; font-weight: bold; color: #c0392b;">
-                Đang chờ nhận lộc...
+    <div id="modal">
+        <div id="board">
+            <h2 style="color: #c0392b">📜 THÁNH QUẺ PHÁN</h2>
+            <p id="msg" style="margin: 15px 0;"></p>
+            <div id="timer">⏳ HẠN LỘC: <span id="clock">15:00</span></div>
+            <div id="gift" style="background: #fff5e6; padding: 15px; border-radius: 10px; border: 2px dashed #c0392b; font-weight: bold; color: #c0392b;">
+                Đang chờ nhận quà...
             </div>
-            <button id="btn-gift">🎁 NHẬN LỘC MAY MẮN</button>
+            <button id="gift-btn" onclick="getGift()">🎁 NHẬN LỘC NGAY</button>
         </div>
     </div>
 
     <script>
-        // --- KHỞI TẠO ÂM THANH BẰNG THƯ VIỆN HOWLER ---
-        const soundClick = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'] });
-        const soundShake = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/1074/1074-preview.mp3'], loop: true });
-        const soundSwipe = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'] });
-        const soundWin = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3'] });
+        // --- CÀI ĐẶT ÂM THANH (Dùng Howler để vượt rào cản trình duyệt) ---
+        const s_click = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'] });
+        const s_shake = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/1074/1074-preview.mp3'], loop: true });
+        const s_swipe = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'] });
+        const s_win = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3'] });
 
-        function nav(id) {
-            soundClick.play();
+        function go(id) {
+            s_click.play();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             setTimeout(() => {
                 document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -107,65 +114,60 @@
             }, 300);
         }
 
-        // BẮT ĐẦU: Quan trọng nhất để mở khóa âm thanh trên iPhone/Android
-        document.getElementById('btn-start').onclick = () => nav('screen-date');
+        function toJar() {
+            if(!document.getElementById('date').value) return alert("Vui lòng chọn ngày sinh!");
+            go('s4');
+        }
 
-        document.getElementById('btn-confirm-date').onclick = () => {
-            if(!document.getElementById('birthdate').value) return alert("Nhập ngày sinh đã nè!");
-            nav('screen-jar');
-        };
-
-        // LẮC BÌNH
-        document.getElementById('jar-container').onclick = function() {
-            if(this.classList.contains('shaking')) return;
+        // --- LẮC BÌNH (Tiếng rung gỗ) ---
+        function shakeJar() {
+            const wrapper = document.getElementById('jar-wrapper');
+            if(wrapper.classList.contains('shaking')) return;
             
-            soundShake.play(); // Tiếng lạch cạch
-            this.classList.add('shaking');
+            s_shake.play(); // Âm thanh rung ngay lập tức
+            wrapper.classList.add('shaking');
 
             setTimeout(() => {
-                soundShake.stop();
-                this.classList.remove('shaking');
-                nav('screen-sticks');
-                renderSticks();
+                s_shake.stop();
+                wrapper.classList.remove('shaking');
+                go('s5');
+                makeSticks();
             }, 2500);
-        };
+        }
 
-        function renderSticks() {
-            const box = document.getElementById('sticks-box');
-            box.innerHTML = '';
+        function makeSticks() {
+            const container = document.getElementById('box');
+            container.innerHTML = '';
             for(let i=0; i<5; i++) {
                 const s = document.createElement('div');
                 s.className = 'stick';
                 s.onclick = function() {
-                    soundSwipe.play(); // Tiếng xoẹt
+                    s_swipe.play(); // Âm thanh xoẹt ngay lập tức
                     this.classList.add('selected');
-                    setTimeout(showResult, 800);
+                    setTimeout(showRes, 800);
                 };
-                box.appendChild(s);
+                container.appendChild(s);
             }
         }
 
-        function showResult() {
-            document.getElementById('fortune-msg').innerText = "Vận thế rạng rỡ, gặp dữ hóa lành, ghé 10/5 là hên!";
-            document.getElementById('result-modal').style.display = 'flex';
+        function showRes() {
+            document.getElementById('msg').innerText = "Vận thế rạng rỡ, gặp dữ hóa lành, ghé 10/5 là lộc tới!";
+            document.getElementById('modal').style.display = 'flex';
         }
 
-        // MARKETING GIẢM 10K CHO NHÓM 5 BẠN
-        document.getElementById('btn-gift').onclick = function() {
-            soundWin.play();
-            const gifts = [
-                "LỘC KẾT ĐOÀN: Nhóm 5 bạn mua chung -> GIẢM NGAY 10.000đ tổng đơn!",
+        // --- QUÀ TẶNG MARKETING (Giảm 10k cho nhóm 5 bạn) ---
+        function getGift() {
+            s_win.play();
+            const rewards = [
+                "LỘC KẾT ĐOÀN: Nhóm 5 bạn mua chung -> GIẢM NGAY 10.000đ!",
                 "LỘC TRI KỶ: Mua 3 ly tặng thêm Topping cho mỗi ly!",
-                "LỘC MAY MẮN: Giảm ngay 2.000đ hóa đơn từ 2 ly!",
-                "LỘC ĐẠI CÁT: Tặng 1 Sticker khi mua nước!"
+                "LỘC MAY MẮN: Giảm ngay 2.000đ khi mua từ 2 ly!",
+                "LỘC HOAN HỈ: Tặng Sticker 10/5 khi mua nước!"
             ];
-            document.getElementById('gift-box').innerText = "🎁 " + gifts[Math.floor(Math.random()*gifts.length)];
-            this.style.display = 'none';
-            document.getElementById('timer-box').style.display = 'block';
-            startTimer();
-        };
-
-        function startTimer() {
+            document.getElementById('gift').innerText = "🎁 " + rewards[Math.floor(Math.random()*rewards.length)];
+            document.getElementById('gift-btn').style.display = 'none';
+            document.getElementById('timer').style.display = 'block';
+            
             let t = 900;
             const clock = document.getElementById('clock');
             const cd = setInterval(() => {
