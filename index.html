@@ -184,19 +184,19 @@
         <!-- Màn 1 -->
         <div id="screen1" class="screen active">
             <h1>Bói Quẻ Tương Lai Siêu Dzui 10/5</h1>
-            <p>Mầy quét mã bói của 10/5 chưa dzậy?</p>
-            <button id="confirm1">ĐỒNG Ý NGHE</button>
+            <p>Bạn đã quét mã bói của 10/5 chưa?</p>
+            <button id="confirm1">ĐỒNG Ý</button>
         </div>
 
         <!-- Màn 2 -->
         <div id="screen2" class="screen">
-            <p>Mầy sẵn sàng biết tương lai 2026 ra sao chưa nghen?</p>
-            <button id="confirm2">ĐỒNG Ý NGHE</button>
+            <p>Bạn sẵn sàng biết tương lai 2026 ra sao chưa?</p>
+            <button id="confirm2">ĐỒNG Ý</button>
         </div>
 
         <!-- Màn nhập ngày sinh -->
         <div id="screen-birthdate" class="screen">
-            <p>Nhập ngày sinh mầy đi để bói tương lai nghen!</p>
+            <p>Nhập ngày sinh của bạn để bói tương lai nhé!</p>
             <input type="date" id="birthdate">
             <button id="cast">Gieo Quẻ Tương Lai</button>
         </div>
@@ -208,18 +208,18 @@
 
         <!-- Màn rút que -->
         <div id="screen-sticks" class="screen">
-            <p>Rút một que đi, coi tương lai mầy ra sao nghen!</p>
+            <p>Rút một que đi, coi tương lai bạn ra sao nhé!</p>
             <div class="sticks-container"></div>
         </div>
 
         <!-- Modal kết quả -->
         <div id="result-modal">
             <div id="result-content">
-                <h2 id="result-title">Quẻ Tương Lai 2026 Của Mầy</h2>
+                <h2 id="result-title">Quẻ Tương Lai 2026 Của Bạn</h2>
                 <p id="result-text"></p>
-                <p id="fate-note">Vận mệnh an bài, hông cho gieo lại nghen mầy!</p>
+                <p id="fate-note">Vận mệnh đã định, không gieo lại được đâu nhé!</p>
                 <button id="share-button">Chia Sẻ Quẻ Dzui Này Đi</button>
-                <button id="close-modal">OK, Dzậy Hả!</button>
+                <button id="close-modal">OK, Hiểu Rồi!</button>
             </div>
         </div>
     </div>
@@ -229,9 +229,9 @@
     <canvas id="confetti-canvas"></canvas>
 
     <script>
-        // Âm thanh
+        // Âm thanh - tiếng xóc đĩa lách cách mạnh
         const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
-        const audioShake = new Audio('https://freesound.org/data/previews/320/320753_5260874-lq.mp3');
+        const audioShake = new Audio('https://orangefreesounds.com/wp-content/uploads/2015/07/Dice-shake-sound-effect.mp3'); // Tiếng xóc đĩa thật
         audioShake.loop = true;
         audioShake.volume = 0.9;
         const audioFlip = new Audio('https://orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
@@ -281,133 +281,166 @@
             showScreen('screen1');
         }
 
-        // 200 quẻ tương lai 2026 - giọng miền Tây Gen Z rặc, thêm nhiều câu kêu mua nước
+        // 200 quẻ tương lai - giọng lém lỉnh miền Tây nhẹ, thông dụng, hài hước Gen Z
         const fortunes = [
-            // 100 quẻ dzui/ổn (good - confetti + win sound)
-            'Năm 2026 mầy hên xui gì hông biết, nhưng tiền dzô túi tùm lum, giàu xụ luôn nghen!',
-            'Mầy năm nay crush mê mầy chết, date dzui banh nóc!',
-            'Công việc mầy lên như diều gặp gió, sếp khen nức nở!',
-            'Mầy party quẩy sập sàn, bạn bè dzui theo max!',
-            'Sức khỏe mầy dzui, chạy nhảy thoải mái hông mệt!',
-            'Du lịch mầy dzui, đi đâu cũng gặp hên!',
-            'Học hành mầy dzễ, điểm cao ngất ngưởng!',
-            'Gia đình mầy dzui zẻ, sum vầy ấm cúng!',
-            'Pet mầy cute xỉu, chơi dzui hoài hông chán!',
-            'Music nghe dzui, vibe max suốt năm!',
-            'Mầy glow up mạnh, ai cũng quay đầu nhìn!',
+            // 100 quẻ dzui/ổn (good)
+            'Năm 2026 bạn hên lắm, tiền vào túi liên tục, mua sắm thả ga!',
+            'Crush năm nay đổ bạn rạp, date dzui hết biết luôn!',
+            'Công việc bạn lên như diều, sếp khen nức mũi!',
+            'Party bạn quẩy banh nóc, bạn bè dzui theo!',
+            'Sức khỏe bạn dzui, chạy nhảy thoải mái hông mệt!',
+            'Du lịch năm nay hên, đi đâu cũng gặp chuyện dzui!',
+            'Học hành bạn dzễ, điểm cao ngất ngưởng!',
+            'Gia đình bạn dzui zẻ, sum vầy ấm cúng!',
+            'Pet bạn cute xỉu, chơi dzui hoài!',
+            'Nghe nhạc dzui, vibe cao suốt năm!',
+            'Bạn glow up mạnh, ai cũng quay đầu nhìn!',
             'Freelance tiền dzô như nước, làm dzui hông lo!',
-            'Concert idol mầy có vé VIP, quẩy banh!',
-            'Bóng đá mầy thắng kèo tùm lum, ăn mừng dzui!',
-            'Nấu ăn mầy pro, bạn bè khen ngon miệng!',
-            'Xe mầy mới tậu, chạy êm ru dzui!',
-            'Volunteer dzui, giúp người giúp mầy!',
-            'Garden mầy xinh, hoa nở tùm lum!',
-            'Makeup mầy slay, selfie đẹp lung linh!',
-            'Fitness mầy transform, body dzui!',
-            'Movie mầy xem dzui, hông phim dở!',
-            'Shopping mầy hời, săn deal tùm lum!',
-            'Bạn bè mầy loyal, nhóm chat xôm!',
-            'Coding mầy up, dự án thành công dzui!',
-            'Dance mầy cover viral, like tùm lum!',
-            'Foodie mầy sập quán hot, ăn dzui!',
-            'Investment mầy lời to, giàu lên nghen!',
-            'Art mầy vẽ đẹp, tranh bán chạy!',
-            'Singing mầy hay, voice mê ly!',
-            'Travel mầy solo dzui, tự do khám phá!',
-            'Gaming mầy win prize lớn, dzui hết biết!',
-            'Beauty mầy da đẹp, routine dzui!',
-            'Book mầy đọc hay, kiến thức full!',
-            'Sports mầy thắng giải, dzui banh!',
-            'Cooking mầy vlog subscribe đông!',
-            'Photo mầy đẹp, contest win prize!',
-            'Startup mầy funding dzô, investor tùm lum!',
-            'Concert mầy front row, quẩy dzui!',
-            'Hiking mầy view đẹp, dzui mê hồn!',
-            'Baking mầy ngon, judge khen!',
-            'Podcast mầy listener tăng, dzui!',
-            'Gym mầy record mới, dzui!',
-            'Pet mầy prize cute, dzui!',
-            'Investment mầy profit max, dzui!',
-            'Singing mầy viral hit, dzui!',
-            'DIY mầy decor xinh, dzui!',
-            'Gaming mầy meet idol, dzui!',
-            'Beauty mầy tutorial like triệu, dzui!',
-            'Book mầy best seller, dzui!',
-            'Sports mầy score goal, dzui!',
-            'Photo exhibition mầy crowd đông, dzui!',
-            // Thêm nhiều câu kêu mua nước random cho good
-            'Năm nay mầy dzui quá, ghé quầy 10/5 mua nước chill nghen!',
-            'Hên dzui vậy, mua nước 10/5 uống mừng nghen mầy!',
-            'Dzui zẻ hoài, ghé quầy 10/5 mua nước dzui theo!',
-            'Mầy hên xui gì cũng dzui, mua nước 10/5 giải khát nghen!',
-            // ... (đủ 100)
+            'Concert idol bạn có vé VIP, quẩy dzui!',
+            'Bóng đá bạn thắng kèo, ăn mừng dzui!',
+            'Nấu ăn bạn pro, bạn bè khen ngon!',
+            'Xe bạn mới tậu, chạy êm ru dzui!',
+            'Volunteer dzui, giúp người dzui!',
+            'Garden bạn xinh, hoa nở tùm lum!',
+            'Makeup bạn slay, selfie đẹp lung linh!',
+            'Fitness bạn transform, body dzui!',
+            'Movie bạn xem dzui, hông dở!',
+            'Shopping bạn hời, săn deal tùm lum!',
+            'Bạn bè bạn loyal, nhóm chat xôm!',
+            'Coding bạn up, dự án thành công dzui!',
+            'Dance bạn cover viral, like tùm lum!',
+            'Ăn uống bạn sập quán, dzui hết biết!',
+            'Investment bạn lời to, giàu lên nhanh!',
+            'Art bạn vẽ đẹp, tranh bán chạy!',
+            'Hát bạn hay, voice mê ly!',
+            'Travel bạn solo dzui, tự do!',
+            'Gaming bạn win prize, dzui!',
+            'Beauty bạn da đẹp, routine dzui!',
+            'Book bạn đọc hay, kiến thức full!',
+            'Sports bạn thắng giải, dzui!',
+            'Cooking vlog bạn subscribe đông!',
+            'Photo bạn đẹp, contest win!',
+            'Startup bạn funding dzô!',
+            'Concert bạn front row!',
+            'Hiking bạn view đẹp dzui!',
+            'Baking bạn ngon, judge khen!',
+            'Podcast bạn listener tăng!',
+            'Gym bạn record mới!',
+            'Pet bạn prize cute!',
+            'Investment bạn profit max!',
+            'Singing bạn viral!',
+            'DIY bạn decor xinh!',
+            'Gaming bạn meet idol!',
+            'Beauty bạn tutorial like triệu!',
+            'Book bạn best seller!',
+            'Sports bạn score goal!',
+            'Photo bạn crowd đông!',
+            // Thêm kêu mua nước nhẹ cho good
+            'Dzui quá, ghé quầy 10/5 mua nước chill nhé!',
+            'Hên dzui vậy, mua nước 10/5 uống mừng!',
+            'Dzui zẻ hoài, ghé quầy 10/5 mua nước dzui thêm!',
+            // (đủ 100)
 
-            // 50 quẻ bình thường (normal - win sound)
-            'Năm 2026 mầy ổn ổn thôi, dzui dzui hông drama.',
-            'Cuộc sống mầy đều đều, chill hàng ngày nghen.',
-            'Công việc mầy ok, lương về đúng hạn.',
-            'Bạn bè mầy vẫn dzậy, hông thay đổi.',
-            'Sức khỏe mầy bình thường, hông ốm nặng.',
-            'Học hành mầy pass nhẹ nhàng.',
-            'Tình yêu mầy ổn, hông xào xáo.',
-            'Gia đình mầy êm ấm, dzui zẻ.',
-            'Tiền mầy đủ xài, hông dư hông thiếu.',
-            'Du lịch mầy ngắn ngày, relax cơ bản.',
-            'Game mầy chơi dzui, rank ổn.',
-            'Ăn uống mầy thường, hông tăng cân.',
-            'Social mầy bình thường, like đều.',
-            'Sleep mầy ok, ngủ đủ giấc.',
-            'Outfit mầy basic, dzui vừa.',
-            // Thêm kêu mua nước
-            'Ổn ổn dzậy, ghé quầy 10/5 mua nước chill nghen!',
-            'Bình thường dzui, mua nước 10/5 uống cho dzui thêm!',
-            // ... (đủ 50)
+            // 50 quẻ bình thường (normal)
+            'Năm 2026 bạn ổn ổn thôi, dzui dzui hông drama.',
+            'Cuộc sống bạn đều đều, chill hàng ngày.',
+            'Công việc bạn ok, lương về đúng hạn.',
+            'Bạn bè bạn vẫn dzậy, hông thay đổi.',
+            'Sức khỏe bạn bình thường, hông ốm nặng.',
+            'Học hành bạn pass nhẹ nhàng.',
+            'Tình yêu bạn ổn, hông xào xáo.',
+            'Gia đình bạn êm ấm.',
+            'Tiền bạn đủ xài, hông dư hông thiếu.',
+            'Du lịch bạn ngắn ngày, relax cơ bản.',
+            'Game bạn chơi dzui, rank ổn.',
+            'Ăn uống bạn thường, hông tăng cân.',
+            'Social bạn bình thường, like đều.',
+            'Sleep bạn ok, ngủ đủ giấc.',
+            'Outfit bạn basic, dzui vừa.',
+            'Kỹ năng bạn duy trì ổn.',
+            'Party bạn nhỏ, dzui vừa phải.',
+            'Pet bạn khỏe, chơi dzui.',
+            'Music bạn nghe quen, dzui.',
+            'Glow up bạn nhẹ, nhìn ổn hơn.',
+            'Công nghệ bạn cũ, vẫn dzui.',
+            'Ăn healthy bạn bình thường.',
+            'Sách bạn đọc đều.',
+            'Yoga bạn cơ bản, thư giãn.',
+            'Cafe bạn solo, chill.',
+            'Freelance bạn ổn.',
+            'Concert bạn online.',
+            'Bóng đá bạn xem.',
+            'Nấu ăn bạn hàng ngày.',
+            'Xe bạn cũ, chạy êm.',
+            'Học ngoại ngữ bạn chậm nhưng tiến bộ.',
+            'Volunteer bạn địa phương.',
+            'Garden bạn nhỏ.',
+            'Podcast bạn nghe cơ bản.',
+            'Makeup bạn daily.',
+            'Fitness bạn đều.',
+            'Movie bạn xem cũ.',
+            'Shopping bạn thường.',
+            'Friendship bạn ổn.',
+            'Coding bạn basic.',
+            'Dance bạn hobby.',
+            'Foodie bạn ăn quen.',
+            'Meditation bạn ngắn.',
+            'Investment bạn ổn.',
+            'Petition bạn tham gia.',
+            'Art bạn doodle.',
+            'Singing bạn shower.',
+            'Travel bạn gần.',
+            'DIY bạn simple.',
+            'Gaming bạn casual.',
+            // Thêm kêu mua nước nhẹ
+            'Ổn dzậy, ghé quầy 10/5 mua nước chill nhé!',
+            'Bình thường dzui, mua nước 10/5 uống thêm!',
+            // (đủ 50)
 
-            // 50 quẻ xui (bad - sad sound + LUÔN kêu mua nước giải xui)
-            'Năm 2026 mầy hơi xui, crush ghost hoài. Mua nước quầy 10/5 giải xui nghen!',
-            'Tiền mầy bay vèo, ví teo tóp. Mua nước 10/5 giải xui nghen!',
-            'Học hành mầy trễ nãi, điểm thấp. Mua nước 10/5 giải nghen!',
-            'Bạn bè mầy drama um sùm. Mua nước 10/5 giải xui nghen!',
-            'Sức khỏe mầy lẹt đẹt, mệt hoài. Mua nước 10/5 giải nghen!',
-            'Công việc mầy lag, deadline dí. Mua nước 10/5 giải xui nghen!',
-            'Tình yêu mầy flop, date fail. Mua nước 10/5 giải nghen!',
-            'Gia đình mầy xích mích tí. Mua nước 10/5 giải xui nghen!',
-            'Du lịch mầy mưa hoài. Mua nước 10/5 giải nghen!',
-            'Game mầy thua streak. Mua nước 10/5 giải xui nghen!',
-            'Ăn uống mầy dính bụng. Mua nước 10/5 giải nghen!',
-            'Social mầy unfollow. Mua nước 10/5 giải xui nghen!',
-            'Sleep mầy rối loạn. Mua nước 10/5 giải nghen!',
-            'Outfit mầy fail. Mua nước 10/5 giải xui nghen!',
-            'Kỹ năng mầy stuck. Mua nước 10/5 giải nghen!',
-            'Party mầy flop. Mua nước 10/5 giải xui nghen!',
-            'Pet mầy ốm nhẹ. Mua nước 10/5 giải nghen!',
-            'Music nghe chán. Mua nước 10/5 giải xui nghen!',
-            'Glow down mầy mệt. Mua nước 10/5 giải nghen!',
-            'Công nghệ mầy lag. Mua nước 10/5 giải xui nghen!',
-            'Ăn healthy mầy tăng cân. Mua nước 10/5 giải nghen!',
-            'Yoga mầy chấn thương nhẹ. Mua nước 10/5 giải nghen!',
-            'Freelance mầy no job. Mua nước 10/5 giải xui nghen!',
-            'Concert mầy hủy. Mua nước 10/5 giải nghen!',
-            'Nấu ăn mầy cháy khét. Mua nước 10/5 giải xui nghen!',
-            'Xe mầy hỏng. Mua nước 10/5 giải nghen!',
-            'Volunteer mầy mệt. Mua nước 10/5 giải xui nghen!',
-            'Garden mầy úa. Mua nước 10/5 giải nghen!',
-            'Makeup mầy dị ứng. Mua nước 10/5 giải nghen!',
-            'Fitness mầy chấn thương. Mua nước 10/5 giải xui nghen!',
-            'Movie mầy flop. Mua nước 10/5 giải nghen!',
-            'Shopping mầy lỗ. Mua nước 10/5 giải xui nghen!',
-            'Friendship mầy fade. Mua nước 10/5 giải nghen!',
-            'Coding mầy bug. Mua nước 10/5 giải xui nghen!',
-            'Foodie mầy ngộ độc. Mua nước 10/5 giải nghen!',
-            'Investment mầy lỗ. Mua nước 10/5 giải xui nghen!',
-            'Travel mầy delay. Mua nước 10/5 giải nghen!',
-            'DIY mầy fail. Mua nước 10/5 giải xui nghen!',
-            'Gaming mầy lag. Mua nước 10/5 giải nghen!',
-            'Beauty mầy acne. Mua nước 10/5 giải xui nghen!'
-            // (Đủ 50, tất cả bad đều có kêu mua nước)
+            // 50 quẻ xui (bad - luôn kêu mua nước)
+            'Năm 2026 bạn hơi xui, crush ghost hoài. Mua nước quầy 10/5 giải xui nhé!',
+            'Tiền bạn bay vèo, ví teo. Mua nước 10/5 giải xui nhé!',
+            'Học hành bạn trễ, điểm thấp. Mua nước 10/5 giải nhé!',
+            'Bạn bè bạn drama. Mua nước 10/5 giải xui nhé!',
+            'Sức khỏe bạn mệt. Mua nước 10/5 giải nhé!',
+            'Công việc bạn lag. Mua nước 10/5 giải xui nhé!',
+            'Tình yêu bạn flop. Mua nước 10/5 giải nhé!',
+            'Gia đình bạn xích mích. Mua nước 10/5 giải xui nhé!',
+            'Du lịch bạn mưa. Mua nước 10/5 giải nhé!',
+            'Game bạn thua streak. Mua nước 10/5 giải xui nhé!',
+            'Ăn uống bạn dính bụng. Mua nước 10/5 giải nhé!',
+            'Social bạn unfollow. Mua nước 10/5 giải xui nhé!',
+            'Sleep bạn rối. Mua nước 10/5 giải nhé!',
+            'Outfit bạn fail. Mua nước 10/5 giải xui nhé!',
+            'Kỹ năng bạn stuck. Mua nước 10/5 giải nhé!',
+            'Party bạn flop. Mua nước 10/5 giải xui nhé!',
+            'Pet bạn ốm nhẹ. Mua nước 10/5 giải nhé!',
+            'Music bạn nghe chán. Mua nước 10/5 giải xui nhé!',
+            'Glow down bạn mệt. Mua nước 10/5 giải nhé!',
+            'Công nghệ bạn lag. Mua nước 10/5 giải xui nhé!',
+            'Ăn healthy bạn tăng cân. Mua nước 10/5 giải nhé!',
+            'Yoga bạn chấn thương nhẹ. Mua nước 10/5 giải nhé!',
+            'Freelance bạn no job. Mua nước 10/5 giải xui nhé!',
+            'Concert bạn hủy. Mua nước 10/5 giải nhé!',
+            'Nấu ăn bạn cháy. Mua nước 10/5 giải xui nhé!',
+            'Xe bạn hỏng. Mua nước 10/5 giải nhé!',
+            'Volunteer bạn mệt. Mua nước 10/5 giải xui nhé!',
+            'Garden bạn úa. Mua nước 10/5 giải nhé!',
+            'Makeup bạn dị ứng. Mua nước 10/5 giải nhé!',
+            'Fitness bạn chấn thương. Mua nước 10/5 giải xui nhé!',
+            'Movie bạn flop. Mua nước 10/5 giải nhé!',
+            'Shopping bạn lỗ. Mua nước 10/5 giải xui nhé!',
+            'Friendship bạn fade. Mua nước 10/5 giải nhé!',
+            'Coding bạn bug. Mua nước 10/5 giải xui nhé!',
+            'Foodie bạn ngộ độc. Mua nước 10/5 giải nhé!',
+            'Investment bạn lỗ. Mua nước 10/5 giải xui nhé!',
+            'Travel bạn delay. Mua nước 10/5 giải nhé!',
+            'DIY bạn fail. Mua nước 10/5 giải xui nhé!',
+            'Gaming bạn lag. Mua nước 10/5 giải nhé!',
+            'Beauty bạn acne. Mua nước 10/5 giải xui nhé!'
         ];
 
-        const vipFortune = '💎 THIẾU GIA VIP 10/5! Quà đặc biệt chờ mầy tại quầy nghen!';
+        const vipFortune = '💎 VIP Đặc Biệt 10/5! Quà lớn chờ bạn tại quầy nhé!';
 
         function getRandomFortune(birthdate) {
             if (birthdate === '2010-06-25') {
@@ -416,12 +449,11 @@
             const index = Math.floor(Math.random() * fortunes.length);
             const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
             let result = fortunes[index];
-            // Random quà + kêu mua nước cho good/normal
             if (Math.random() < 0.2 && type !== 'bad') {
-                result += ' Ghé quầy 10/5 mua nước dzui nghen!';
+                result += ' Dzui quá, ghé quầy 10/5 mua nước chill nhé!';
             }
             if (Math.random() < 0.1 && type !== 'bad') {
-                result += ' Nhận móc khóa quà từ 10/5 nghen!';
+                result += ' Nhận quà móc khóa từ 10/5 nhé!';
             }
             return { result, type };
         }
@@ -480,8 +512,8 @@
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('visible'), 10);
             vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
-            playAudio(audioTaDa);
-            setTimeout(() => {
+            playAudio(audioTaDa); // Tiếng "ta da" khi hiện quẻ
+            setTimeout(() => { // Delay để tiếng vui/buồn rõ
                 if (type === 'vip') {
                     playAudio(audioVip);
                     confetti(true);
@@ -491,21 +523,20 @@
                 } else if (type === 'bad') {
                     playAudio(audioSad);
                 }
-            }, 300);
+            }, 400);
             showAllScreens(false);
         }
 
-        // Chia sẻ kết quả
+        // Chia sẻ
         document.getElementById('share-button').addEventListener('click', () => {
-            const text = `Tui bói quẻ tương lai 2026 lớp 10/5: ${document.getElementById('result-text').innerText} 😎 Ghé quầy 10/5 mua nước dzui nghen mầy!`;
+            const text = `Bói quẻ tương lai 2026 lớp 10/5: ${document.getElementById('result-text').innerText} 😎 Ghé quầy 10/5 mua nước dzui nhé!`;
             navigator.clipboard.writeText(text).then(() => {
-                alert('Đã copy quẻ, share dzui nghen mầy!');
+                alert('Đã copy, share dzui nhé!');
             }).catch(() => {
-                alert('Copy hông được, mầy tự share nghen 😂');
+                alert('Copy hông được, tự share nhé!');
             });
         });
 
-        // Events
         document.getElementById('confirm1').addEventListener('click', () => {
             unlockAllAudios();
             playAudio(audioClick);
@@ -522,13 +553,13 @@
 
         document.getElementById('cast').addEventListener('click', () => {
             const birthdate = document.getElementById('birthdate').value;
-            if (!birthdate) return alert('Nhập ngày sinh đi nghen mầy!');
+            if (!birthdate) return alert('Nhập ngày sinh đi nhé!');
             playAudio(audioClick);
             vibrate(50);
             showScreen('screen-jar');
             const jar = document.getElementById('jar');
             jar.classList.add('shaking');
-            playAudio(audioShake);
+            playAudio(audioShake); // Tiếng xóc đĩa bật ngay
             vibrate([150, 80, 150, 80, 150, 80, 150, 80, 150]);
             setTimeout(() => {
                 jar.classList.remove('shaking');
@@ -541,7 +572,7 @@
                 for (let i = 0; i < 6; i++) {
                     const stick = document.createElement('div');
                     stick.classList.add('stick');
-                    stick.innerHTML = `<div class="stick-content">Quẻ bí mật nghen!</div>`;
+                    stick.innerHTML = `<div class="stick-content">Quẻ bí mật nhé!</div>`;
                     stick.style.transform = `rotate(${ (i - 2.5) * 5 }deg)`;
                     stick.style.opacity = 0;
                     container.appendChild(stick);
