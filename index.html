@@ -1,613 +1,317 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bói Quẻ Tương Lai Siêu Dzui 10/5</title>
-    <style>
-        /* Reset và base styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff5e6; /* Giấy cũ */
-            color: #5d4037; /* Gỗ đậm */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            font-size: 18px;
-            line-height: 1.5;
-            position: relative;
-        }
-        .container {
-            max-width: 100%;
-            width: 100%;
-            background: rgba(255, 245, 230, 0.9);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 20px rgba(93, 64, 55, 0.2);
-        }
-        h1, h2 { color: #c0392b; /* Đỏ đô */ }
-        button {
-            background: #ffd700; /* Vàng kim */
-            color: #5d4037;
-            border: none;
-            padding: 15px 30px;
-            font-size: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            margin: 20px 0;
-            will-change: transform, box-shadow;
-        }
-        button:hover { transform: scale(1.05); box-shadow: 0 5px 10px rgba(255, 215, 0, 0.5); }
-        input[type="date"] {
-            padding: 10px;
-            font-size: 18px;
-            border: 2px solid #c0392b;
-            border-radius: 10px;
-            margin: 20px 0;
-            transition: border-color 0.3s ease-in-out;
-        }
-        input[type="date"]:focus { border-color: #ffd700; }
-        /* Ẩn các màn với transition */
-        .screen {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .active {
-            display: block;
-            opacity: 1;
-        }
-        /* Ống quẻ - lắc mạnh + fallback */
-        #jar {
-            width: 200px;
-            height: 280px;
-            background: url('jar.png') center/contain no-repeat, linear-gradient(#8b4513, #d2691e);
-            border: 12px solid #5d4037;
-            border-radius: 20px 20px 60px 60px;
-            margin: 40px auto;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            transition: transform 0.1s ease-in-out;
-            will-change: transform;
-        }
-        .shaking { 
-            animation: shake-strong 0.12s infinite cubic-bezier(0.36, 0.07, 0.19, 0.97); 
-        }
-        @keyframes shake-strong {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            10% { transform: translate(-8px, -12px) rotate(-8deg); }
-            20% { transform: translate(12px, -5px) rotate(10deg); }
-            30% { transform: translate(-10px, 10px) rotate(-7deg); }
-            40% { transform: translate(10px, -10px) rotate(8deg); }
-            50% { transform: translate(-15px, 0) rotate(-12deg); }
-            60% { transform: translate(15px, 8px) rotate(12deg); }
-            70% { transform: translate(-12px, -8px) rotate(-10deg); }
-            80% { transform: translate(10px, 12px) rotate(10deg); }
-            90% { transform: translate(-10px, -10px) rotate(-8deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-        /* Que quẻ */
-        .sticks-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 200px;
-            margin: 40px 0;
-            position: relative;
-        }
-        .stick {
-            width: 20px;
-            height: 150px;
-            background-color: #5d4037;
-            margin: 0 10px;
-            cursor: pointer;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease-in-out;
-            position: relative;
-            border-radius: 5px 5px 0 0;
-            box-shadow: 0 0 10px rgba(93, 64, 55, 0.5);
-            will-change: transform, box-shadow;
-        }
-        .stick:hover { box-shadow: 0 0 20px #ffd700; }
-        .stick.selected { transform: translateY(-100px); }
-        .stick-content {
-            position: absolute;
-            bottom: -50px;
-            width: 100%;
-            text-align: center;
-            color: #fff5e6;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out, bottom 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .stick.selected .stick-content { opacity: 1; bottom: -150px; }
-        .stick.disabled { pointer-events: none; opacity: 0.5; }
-        /* Modal kết quả */
-        #result-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        #result-modal.visible { opacity: 1; display: flex; }
-        #result-content {
-            background: #fff5e6;
-            padding: 40px;
-            border-radius: 30px;
-            max-width: 95%;
-            text-align: center;
-            transform: scale(0.8);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        #result-modal.visible #result-content { transform: scale(1); }
-        #result-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        #fate-note {
-            margin-top: 20px;
-            font-style: italic;
-            color: #c0392b;
-        }
-        #share-button {
-            background: #c0392b;
-            color: #ffd700;
-            margin-top: 20px;
-        }
-        #share-button:hover { transform: scale(1.05); }
-        /* Credit */
-        #credit {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            font-size: 12px;
-            color: #5d4037;
-            opacity: 0.6;
-            z-index: 10;
-        }
-        /* Confetti canvas */
-        #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Màn 1 -->
-        <div id="screen1" class="screen active">
-            <h1>Bói Quẻ Tương Lai Siêu Dzui 10/5</h1>
-            <p>Bạn đã quét mã bói của 10/5 chưa?</p>
-            <button id="confirm1">ĐỒNG Ý</button>
-        </div>
+<script>
+    // --- ÂM THANH & CẤU HÌNH ---
+    const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
+    const audioShake = new Audio('https://orangefreesounds.com/wp-content/uploads/2015/07/Dice-shake-sound-effect.mp3'); 
+    audioShake.loop = true; audioShake.volume = 0.9;
+    const audioFlip = new Audio('https://orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
+    const audioWin = new Audio('https://orangefreesounds.com/wp-content/uploads/2020/09/Win-sound-effect.mp3?_=1'); audioWin.volume = 0.8;
+    const audioSad = new Audio('https://orangefreesounds.com/wp-content/uploads/2021/12/Sad-violin-sound.mp3?_=1'); audioSad.volume = 0.7;
+    const audioVip = new Audio('https://orangefreesounds.com/wp-content/uploads/2022/02/Celebration-sound-effect.mp3?_=1'); audioVip.volume = 0.9;
+    const audioTaDa = new Audio('https://orangefreesounds.com/wp-content/uploads/2020/09/Win-sound-effect.mp3?_=1'); audioTaDa.volume = 0.8;
 
-        <!-- Màn 2 -->
-        <div id="screen2" class="screen">
-            <p>Bạn sẵn sàng biết tương lai 2026 ra sao chưa?</p>
-            <button id="confirm2">ĐỒNG Ý</button>
-        </div>
+    const allAudios = [audioClick, audioShake, audioFlip, audioWin, audioSad, audioVip, audioTaDa];
+    function unlockAllAudios() { allAudios.forEach(a => { a.play().then(() => a.pause()).catch(() => {}); }); }
+    function playAudio(audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    function vibrate(pattern) { if (navigator.vibrate) navigator.vibrate(pattern); }
 
-        <!-- Màn nhập ngày sinh -->
-        <div id="screen-birthdate" class="screen">
-            <p>Nhập ngày sinh của bạn để bói tương lai nhé!</p>
-            <input type="date" id="birthdate">
-            <button id="cast">Gieo Quẻ Tương Lai</button>
-        </div>
-
-        <!-- Màn lắc ống quẻ (chỉ hình lắc mạnh) -->
-        <div id="screen-jar" class="screen">
-            <div id="jar"></div>
-        </div>
-
-        <!-- Màn rút que -->
-        <div id="screen-sticks" class="screen">
-            <p>Rút một que đi, coi tương lai bạn ra sao nhé!</p>
-            <div class="sticks-container"></div>
-        </div>
-
-        <!-- Modal kết quả -->
-        <div id="result-modal">
-            <div id="result-content">
-                <h2 id="result-title">Quẻ Tương Lai 2026 Của Bạn</h2>
-                <p id="result-text"></p>
-                <p id="fate-note">Vận mệnh đã định, không gieo lại được đâu nhé!</p>
-                <button id="share-button">Chia Sẻ Quẻ Dzui Này Đi</button>
-                <button id="close-modal">OK, Hiểu Rồi!</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="credit">dev by hai duong</div>
-
-    <canvas id="confetti-canvas"></canvas>
-
-    <script>
-        // Âm thanh - tiếng xóc đĩa lách cách mạnh
-        const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
-        const audioShake = new Audio('https://orangefreesounds.com/wp-content/uploads/2015/07/Dice-shake-sound-effect.mp3'); // Tiếng xóc đĩa thật
-        audioShake.loop = true;
-        audioShake.volume = 0.9;
-        const audioFlip = new Audio('https://orangefreesounds.com/wp-content/uploads/2018/07/Card-flip-sound-effect.mp3');
-        const audioWin = new Audio('https://orangefreesounds.com/wp-content/uploads/2020/09/Win-sound-effect.mp3?_=1');
-        audioWin.volume = 0.8;
-        const audioSad = new Audio('https://orangefreesounds.com/wp-content/uploads/2021/12/Sad-violin-sound.mp3?_=1');
-        audioSad.volume = 0.7;
-        const audioVip = new Audio('https://orangefreesounds.com/wp-content/uploads/2022/02/Celebration-sound-effect.mp3?_=1');
-        audioVip.volume = 0.9;
-        const audioTaDa = new Audio('https://orangefreesounds.com/wp-content/uploads/2020/09/Win-sound-effect.mp3?_=1');
-        audioTaDa.volume = 0.8;
-
-        const allAudios = [audioClick, audioShake, audioFlip, audioWin, audioSad, audioVip, audioTaDa];
-
-        allAudios.forEach(audio => {
-            audio.preload = 'auto';
-            audio.load();
-        });
-
-        function unlockAudio(audio) {
-            const promise = audio.play();
-            if (promise !== undefined) {
-                promise.then(() => audio.pause().currentTime = 0).catch(() => {});
-            }
-        }
-
-        function unlockAllAudios() {
-            allAudios.forEach(unlockAudio);
-        }
-
-        function playAudio(audio) {
-            audio.currentTime = 0;
-            audio.play().catch(() => {});
-        }
-
-        function vibrate(pattern) {
-            if (navigator.vibrate) navigator.vibrate(pattern);
-        }
-
-        const storageKey = 'fortune10_5';
-        let fortuneData = JSON.parse(localStorage.getItem(storageKey)) || null;
-
-        if (fortuneData) {
-            showAllScreens(false);
-            showResult(fortuneData.result, fortuneData.type);
-        } else {
-            showScreen('screen1');
-        }
-
-        // 200 quẻ tương lai - giọng lém lỉnh miền Tây nhẹ, thông dụng, hài hước Gen Z
-        const fortunes = [
-            // 100 quẻ dzui/ổn (good)
-            'Năm 2026 bạn hên lắm, tiền vào túi liên tục, mua sắm thả ga!',
-            'Crush năm nay đổ bạn rạp, date dzui hết biết luôn!',
-            'Công việc bạn lên như diều, sếp khen nức mũi!',
-            'Party bạn quẩy banh nóc, bạn bè dzui theo!',
-            'Sức khỏe bạn dzui, chạy nhảy thoải mái hông mệt!',
-            'Du lịch năm nay hên, đi đâu cũng gặp chuyện dzui!',
-            'Học hành bạn dzễ, điểm cao ngất ngưởng!',
-            'Gia đình bạn dzui zẻ, sum vầy ấm cúng!',
-            'Pet bạn cute xỉu, chơi dzui hoài!',
-            'Nghe nhạc dzui, vibe cao suốt năm!',
-            'Bạn glow up mạnh, ai cũng quay đầu nhìn!',
-            'Freelance tiền dzô như nước, làm dzui hông lo!',
-            'Concert idol bạn có vé VIP, quẩy dzui!',
-            'Bóng đá bạn thắng kèo, ăn mừng dzui!',
-            'Nấu ăn bạn pro, bạn bè khen ngon!',
-            'Xe bạn mới tậu, chạy êm ru dzui!',
-            'Volunteer dzui, giúp người dzui!',
-            'Garden bạn xinh, hoa nở tùm lum!',
-            'Makeup bạn slay, selfie đẹp lung linh!',
-            'Fitness bạn transform, body dzui!',
-            'Movie bạn xem dzui, hông dở!',
-            'Shopping bạn hời, săn deal tùm lum!',
-            'Bạn bè bạn loyal, nhóm chat xôm!',
-            'Coding bạn up, dự án thành công dzui!',
-            'Dance bạn cover viral, like tùm lum!',
-            'Ăn uống bạn sập quán, dzui hết biết!',
-            'Investment bạn lời to, giàu lên nhanh!',
-            'Art bạn vẽ đẹp, tranh bán chạy!',
-            'Hát bạn hay, voice mê ly!',
-            'Travel bạn solo dzui, tự do!',
-            'Gaming bạn win prize, dzui!',
-            'Beauty bạn da đẹp, routine dzui!',
-            'Book bạn đọc hay, kiến thức full!',
-            'Sports bạn thắng giải, dzui!',
-            'Cooking vlog bạn subscribe đông!',
-            'Photo bạn đẹp, contest win!',
-            'Startup bạn funding dzô!',
-            'Concert bạn front row!',
-            'Hiking bạn view đẹp dzui!',
-            'Baking bạn ngon, judge khen!',
-            'Podcast bạn listener tăng!',
-            'Gym bạn record mới!',
-            'Pet bạn prize cute!',
-            'Investment bạn profit max!',
-            'Singing bạn viral!',
-            'DIY bạn decor xinh!',
-            'Gaming bạn meet idol!',
-            'Beauty bạn tutorial like triệu!',
-            'Book bạn best seller!',
-            'Sports bạn score goal!',
-            'Photo bạn crowd đông!',
-            // Thêm kêu mua nước nhẹ cho good
-            'Dzui quá, ghé quầy 10/5 mua nước chill nhé!',
-            'Hên dzui vậy, mua nước 10/5 uống mừng!',
-            'Dzui zẻ hoài, ghé quầy 10/5 mua nước dzui thêm!',
-            // (đủ 100)
-
-            // 50 quẻ bình thường (normal)
-            'Năm 2026 bạn ổn ổn thôi, dzui dzui hông drama.',
-            'Cuộc sống bạn đều đều, chill hàng ngày.',
-            'Công việc bạn ok, lương về đúng hạn.',
-            'Bạn bè bạn vẫn dzậy, hông thay đổi.',
-            'Sức khỏe bạn bình thường, hông ốm nặng.',
-            'Học hành bạn pass nhẹ nhàng.',
-            'Tình yêu bạn ổn, hông xào xáo.',
-            'Gia đình bạn êm ấm.',
-            'Tiền bạn đủ xài, hông dư hông thiếu.',
-            'Du lịch bạn ngắn ngày, relax cơ bản.',
-            'Game bạn chơi dzui, rank ổn.',
-            'Ăn uống bạn thường, hông tăng cân.',
-            'Social bạn bình thường, like đều.',
-            'Sleep bạn ok, ngủ đủ giấc.',
-            'Outfit bạn basic, dzui vừa.',
-            'Kỹ năng bạn duy trì ổn.',
-            'Party bạn nhỏ, dzui vừa phải.',
-            'Pet bạn khỏe, chơi dzui.',
-            'Music bạn nghe quen, dzui.',
-            'Glow up bạn nhẹ, nhìn ổn hơn.',
-            'Công nghệ bạn cũ, vẫn dzui.',
-            'Ăn healthy bạn bình thường.',
-            'Sách bạn đọc đều.',
-            'Yoga bạn cơ bản, thư giãn.',
-            'Cafe bạn solo, chill.',
-            'Freelance bạn ổn.',
-            'Concert bạn online.',
-            'Bóng đá bạn xem.',
-            'Nấu ăn bạn hàng ngày.',
-            'Xe bạn cũ, chạy êm.',
-            'Học ngoại ngữ bạn chậm nhưng tiến bộ.',
-            'Volunteer bạn địa phương.',
-            'Garden bạn nhỏ.',
-            'Podcast bạn nghe cơ bản.',
-            'Makeup bạn daily.',
-            'Fitness bạn đều.',
-            'Movie bạn xem cũ.',
-            'Shopping bạn thường.',
-            'Friendship bạn ổn.',
-            'Coding bạn basic.',
-            'Dance bạn hobby.',
-            'Foodie bạn ăn quen.',
-            'Meditation bạn ngắn.',
-            'Investment bạn ổn.',
-            'Petition bạn tham gia.',
-            'Art bạn doodle.',
-            'Singing bạn shower.',
-            'Travel bạn gần.',
-            'DIY bạn simple.',
-            'Gaming bạn casual.',
-            // Thêm kêu mua nước nhẹ
-            'Ổn dzậy, ghé quầy 10/5 mua nước chill nhé!',
-            'Bình thường dzui, mua nước 10/5 uống thêm!',
-            // (đủ 50)
-
-            // 50 quẻ xui (bad - luôn kêu mua nước)
-            'Năm 2026 bạn hơi xui, crush ghost hoài. Mua nước quầy 10/5 giải xui nhé!',
-            'Tiền bạn bay vèo, ví teo. Mua nước 10/5 giải xui nhé!',
-            'Học hành bạn trễ, điểm thấp. Mua nước 10/5 giải nhé!',
-            'Bạn bè bạn drama. Mua nước 10/5 giải xui nhé!',
-            'Sức khỏe bạn mệt. Mua nước 10/5 giải nhé!',
-            'Công việc bạn lag. Mua nước 10/5 giải xui nhé!',
-            'Tình yêu bạn flop. Mua nước 10/5 giải nhé!',
-            'Gia đình bạn xích mích. Mua nước 10/5 giải xui nhé!',
-            'Du lịch bạn mưa. Mua nước 10/5 giải nhé!',
-            'Game bạn thua streak. Mua nước 10/5 giải xui nhé!',
-            'Ăn uống bạn dính bụng. Mua nước 10/5 giải nhé!',
-            'Social bạn unfollow. Mua nước 10/5 giải xui nhé!',
-            'Sleep bạn rối. Mua nước 10/5 giải nhé!',
-            'Outfit bạn fail. Mua nước 10/5 giải xui nhé!',
-            'Kỹ năng bạn stuck. Mua nước 10/5 giải nhé!',
-            'Party bạn flop. Mua nước 10/5 giải xui nhé!',
-            'Pet bạn ốm nhẹ. Mua nước 10/5 giải nhé!',
-            'Music bạn nghe chán. Mua nước 10/5 giải xui nhé!',
-            'Glow down bạn mệt. Mua nước 10/5 giải nhé!',
-            'Công nghệ bạn lag. Mua nước 10/5 giải xui nhé!',
-            'Ăn healthy bạn tăng cân. Mua nước 10/5 giải nhé!',
-            'Yoga bạn chấn thương nhẹ. Mua nước 10/5 giải nhé!',
-            'Freelance bạn no job. Mua nước 10/5 giải xui nhé!',
-            'Concert bạn hủy. Mua nước 10/5 giải nhé!',
-            'Nấu ăn bạn cháy. Mua nước 10/5 giải xui nhé!',
-            'Xe bạn hỏng. Mua nước 10/5 giải nhé!',
-            'Volunteer bạn mệt. Mua nước 10/5 giải xui nhé!',
-            'Garden bạn úa. Mua nước 10/5 giải nhé!',
-            'Makeup bạn dị ứng. Mua nước 10/5 giải nhé!',
-            'Fitness bạn chấn thương. Mua nước 10/5 giải xui nhé!',
-            'Movie bạn flop. Mua nước 10/5 giải nhé!',
-            'Shopping bạn lỗ. Mua nước 10/5 giải xui nhé!',
-            'Friendship bạn fade. Mua nước 10/5 giải nhé!',
-            'Coding bạn bug. Mua nước 10/5 giải xui nhé!',
-            'Foodie bạn ngộ độc. Mua nước 10/5 giải nhé!',
-            'Investment bạn lỗ. Mua nước 10/5 giải xui nhé!',
-            'Travel bạn delay. Mua nước 10/5 giải nhé!',
-            'DIY bạn fail. Mua nước 10/5 giải xui nhé!',
-            'Gaming bạn lag. Mua nước 10/5 giải nhé!',
-            'Beauty bạn acne. Mua nước 10/5 giải xui nhé!'
+    // --- DỮ LIỆU BÓI TOÁN THUẦN VIỆT & GEN Z ---
+    
+    // Hàm lấy cung hoàng đạo
+    function getZodiac(day, month) {
+        const zodiacs = [
+            { name: "Bạch Dương", start: [3, 21], end: [4, 19] },
+            { name: "Kim Ngưu", start: [4, 20], end: [5, 20] },
+            { name: "Song Tử", start: [5, 21], end: [6, 21] },
+            { name: "Cự Giải", start: [6, 22], end: [7, 22] },
+            { name: "Sư Tử", start: [7, 23], end: [8, 22] },
+            { name: "Xử Nữ", start: [8, 23], end: [9, 22] },
+            { name: "Thiên Bình", start: [9, 23], end: [10, 23] },
+            { name: "Bọ Cạp", start: [10, 24], end: [11, 22] },
+            { name: "Nhân Mã", start: [11, 23], end: [12, 21] },
+            { name: "Ma Kết", start: [12, 22], end: [1, 19] },
+            { name: "Bảo Bình", start: [1, 20], end: [2, 18] },
+            { name: "Song Ngư", start: [2, 19], end: [3, 20] }
         ];
+        // Xử lý logic ngày tháng đơn giản
+        // Mặc định trả về một cung nào đó nếu check nhanh
+        if((month == 1 && day <= 19) || (month == 12 && day >=22)) return "Ma Kết";
+        if((month == 1 && day >= 20) || (month == 2 && day <=18)) return "Bảo Bình";
+        if((month == 2 && day >= 19) || (month == 3 && day <=20)) return "Song Ngư";
+        if((month == 3 && day >= 21) || (month == 4 && day <=19)) return "Bạch Dương";
+        if((month == 4 && day >= 20) || (month == 5 && day <=20)) return "Kim Ngưu";
+        if((month == 5 && day >= 21) || (month == 6 && day <=21)) return "Song Tử";
+        if((month == 6 && day >= 22) || (month == 7 && day <=22)) return "Cự Giải";
+        if((month == 7 && day >= 23) || (month == 8 && day <=22)) return "Sư Tử";
+        if((month == 8 && day >= 23) || (month == 9 && day <=22)) return "Xử Nữ";
+        if((month == 9 && day >= 23) || (month == 10 && day <=23)) return "Thiên Bình";
+        if((month == 10 && day >= 24) || (month == 11 && day <=22)) return "Bọ Cạp";
+        if((month == 11 && day >= 23) || (month == 12 && day <=21)) return "Nhân Mã";
+        return "Người Bí Ẩn";
+    }
 
-        const vipFortune = '💎 VIP Đặc Biệt 10/5! Quà lớn chờ bạn tại quầy nhé!';
+    const fortunes = [
+        // --- NHÓM ĐẠI CÁT (SIÊU HÊN) ---
+        { type: 'good', text: 'Số đỏ như son! Năm tới tiền vô như nước sông Đà, tiền ra nhỏ giọt như cà phê phin.' },
+        { type: 'good', text: 'Quý nhân phù trợ! Đi thi khoanh bừa cũng trúng, crush tự nhiên inbox rủ đi chơi.' },
+        { type: 'good', text: 'Vận đào hoa nở rộ! Ra ngõ gặp trai xinh gái đẹp, coi chừng bị đánh ghen vì quá hot.' },
+        { type: 'good', text: 'Thần tài gõ cửa! Ăn uống được bao, shopping săn được sale 90%, sướng nhất bạn rồi.' },
+        { type: 'good', text: 'Sự nghiệp thăng hoa! Làm nhóm trưởng không ai cãi, thầy cô cưng như trứng mỏng.' },
+        { type: 'good', text: 'Cung hỷ phát tài! Năm nay lì xì dày cộm, đếm mỏi tay không hết.' },
+        { type: 'good', text: 'Hào quang rực rỡ! Bạn sẽ là tâm điểm của mọi drama... à nhầm, mọi bữa tiệc!' },
+        { type: 'good', text: 'Gia đạo bình an, tủ lạnh lúc nào cũng đầy đồ ăn ngon. Mập lên xíu nhưng mà sang!' },
+        { type: 'good', text: 'Trí tuệ khai thông! Học 1 hiểu 10, nhớ bài siêu dai như đỉa đói.' },
+        { type: 'good', text: 'Sức khỏe dồi dào như trâu nước, thức khuya cày phim không lo thâm mắt (nhưng vẫn nên ngủ sớm nha).' },
+        { type: 'good', text: 'Năm nay đi đâu cũng có người đón đưa, xe cộ êm ru, không lo thủng lốp.' },
+        { type: 'good', text: 'Bạn sắp nhặt được tiền... hoặc ít nhất là không bị mất tiền ngu. Chúc mừng!' },
+        { type: 'good', text: 'Check map thành công! Tìm được chân ái cuộc đời hoặc quán ăn ngon tuyệt đỉnh.' },
+        { type: 'good', text: 'Vía cực tốt! Mua vé số đi biết đâu trúng giải an ủi (hoặc độc đắc ai biết được).' },
+        { type: 'good', text: 'Da dẻ hồng hào, thần thái ngút ngàn, camera thường chụp cũng đẹp không góc chết.' },
+        
+        // --- NHÓM BÌNH THƯỜNG (CHILL) ---
+        { type: 'normal', text: 'Năm nay bình bình, sáng đi học chiều về ngủ, tối lướt TikTok. Cuộc sống chill phết.' },
+        { type: 'normal', text: 'Tình duyên vẫn thế: Độc toàn thân nhưng được cái tự do muôn năm.' },
+        { type: 'normal', text: 'Học hành ổn định, không rớt môn nào nhưng cũng chưa được học bổng. Cố lên xíu nữa!' },
+        { type: 'normal', text: 'Tiền đủ xài, trà sữa uống lai rai. Đừng đua đòi mua đồ hiệu là được.' },
+        { type: 'normal', text: 'Bạn bè vẫn tụ tập chém gió đều đều. Cẩn thận cái miệng hại cái thân nha.' },
+        { type: 'normal', text: 'Sức khỏe ok, chỉ hay đau lưng mỏi gối do nằm bấm điện thoại nhiều quá.' },
+        { type: 'normal', text: 'Năm nay ít sóng gió, tâm bất biến giữa dòng đời vạn biến.' },
+        { type: 'normal', text: 'Có kèo đi chơi xa nhưng coi chừng bể kèo phút chót. Chuẩn bị tinh thần nha.' },
+        { type: 'normal', text: 'Crush có nhìn bạn... nhưng là nhìn lướt qua. Kiên nhẫn thêm chút nữa.' },
+        { type: 'normal', text: 'Ăn được ngủ được là tiên. Bạn chính là tiên... nữ cử tạ (đùa thôi, khỏe là tốt).' },
+        { type: 'normal', text: 'Mọi thứ cứ tàn tàn, không giàu nhanh nhưng cũng không nghèo đi. An toàn là trên hết.' },
+        { type: 'normal', text: 'Ra đường nhớ đội mũ bảo hiểm, không phải sợ công an mà để bảo vệ cái đầu thông minh.' },
 
-        function getRandomFortune(birthdate) {
-            if (birthdate === '2010-06-25') {
-                return { result: vipFortune, type: 'vip' };
-            }
-            const index = Math.floor(Math.random() * fortunes.length);
-            const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
-            let result = fortunes[index];
-            if (Math.random() < 0.2 && type !== 'bad') {
-                result += ' Dzui quá, ghé quầy 10/5 mua nước chill nhé!';
-            }
-            if (Math.random() < 0.1 && type !== 'bad') {
-                result += ' Nhận quà móc khóa từ 10/5 nhé!';
-            }
-            return { result, type };
+        // --- NHÓM HƠI "XU" (CÀ KHỊA + BÁN HÀNG) ---
+        { type: 'bad', text: 'Sao "Thái Bạch" chiếu! Tiền dễ bay màu vào trà sữa. Mua ngay nước ở quầy 10/5 để giải hạn!' },
+        { type: 'bad', text: 'Cẩn thận tiểu nhân! Có đứa bạn thân sắp "bóc phốt" bạn. Mua nước 10/5 mời nó uống để bịt miệng ngay!' },
+        { type: 'bad', text: 'Tình duyên lận đận, lắm mối tối nằm không. Ghé quầy 10/5 mua nước uống cho đỡ buồn.' },
+        { type: 'bad', text: 'Dễ bị "dí deadline" tới tắt thở. Nạp năng lượng gấp tại quầy 10/5 mới qua khỏi kiếp nạn này.' },
+        { type: 'bad', text: 'Coi chừng tăng cân không phanh! Nhưng mà lỡ rồi, uống thêm ly nước ngon ở 10/5 cho bõ công mập.' },
+        { type: 'bad', text: 'Sắp tới có bài kiểm tra khó nhằn. Mua nước 10/5 uống để não nảy số nhanh hơn!' },
+        { type: 'bad', text: 'Đi đường cẩn thận ổ gà, đi học cẩn thận sổ đầu bài. Ghé 10/5 mua bùa may mắn (là chai nước đó).' },
+        { type: 'bad', text: 'Crush sắp công khai người yêu... mà không phải bạn. Đau lòng quá thì uống nước 10/5 giải sầu.' },
+        { type: 'bad', text: 'Tháng này dễ mất đồ lặt vặt (bút, tẩy, liêm sỉ). Giữ đồ cẩn thận và ghé 10/5 ủng hộ nhé.' },
+        { type: 'bad', text: 'Bạn sắp bị phụ huynh "ca bài ca con cá". Uống nước 10/5 để hạ hỏa nào.' },
+        { type: 'bad', text: 'Sao Thủy nghịch hành! Mạng lag, tin nhắn gửi nhầm. Cần nước 10/5 để bình tĩnh lại.' },
+        { type: 'bad', text: 'Có điềm báo... hết tiền điện thoại 4G. Tiết kiệm tiền nạp thẻ bằng cách mua nước giá rẻ ở 10/5.' },
+        { type: 'bad', text: 'Mặt sắp mọc mụn do thức khuya soi gương. Uống nước 10/5 thanh lọc cơ thể gấp!' },
+        { type: 'bad', text: 'Dễ bị "quê" trước đám đông. Tự tin lên hoặc cầm ly nước 10/5 che mặt cho đỡ ngại.' },
+        { type: 'bad', text: 'Năm nay coi chừng bị "chó rượt" (nghĩa bóng là chạy deadline). Tiếp sức tại quầy 10/5 nhé!' }
+    ];
+
+    const vipFortune = { type: 'vip', text: '💎 QUẺ VIP HOÀNG GIA! Bạn là trùm cuối của lớp 10/5. Ghé quầy nhận ưu đãi đặc biệt ngay!' };
+
+    // Xử lý Logic Bói
+    const storageKey = 'fortune10_5_v2'; // Đổi key mới để reset dữ liệu cũ của user
+    let fortuneData = JSON.parse(localStorage.getItem(storageKey)) || null;
+
+    if (fortuneData) {
+        showAllScreens(false);
+        showResult(fortuneData.text, fortuneData.type, fortuneData.zodiac, fortuneData.luckyNum);
+    } else {
+        showScreen('screen1');
+    }
+
+    function getRandomFortune(birthdateStr) {
+        // Xử lý ngày sinh để lấy cung hoàng đạo
+        const dateObj = new Date(birthdateStr);
+        const day = dateObj.getDate();
+        const month = dateObj.getMonth() + 1;
+        const zodiac = getZodiac(day, month);
+        
+        // Tạo con số may mắn ngẫu nhiên từ 0-99
+        const luckyNum = Math.floor(Math.random() * 100);
+
+        // Easter Egg: Nếu sinh nhật trùng ngày hội trại hoặc ngày đặc biệt
+        if (birthdateStr.endsWith('05-10') || birthdateStr.endsWith('10-05')) {
+            return { ...vipFortune, zodiac, luckyNum };
         }
 
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        // Random có trọng số dựa trên cảm xúc
+        // Tỷ lệ: 40% Good, 30% Normal, 30% Bad (Bad có CTA bán hàng)
+        const rand = Math.random();
+        let selectedFortune;
+        
+        if (rand < 0.45) {
+            // Lấy quẻ tốt
+            const goodList = fortunes.filter(f => f.type === 'good');
+            selectedFortune = goodList[Math.floor(Math.random() * goodList.length)];
+        } else if (rand < 0.75) {
+            // Lấy quẻ thường
+            const normalList = fortunes.filter(f => f.type === 'normal');
+            selectedFortune = normalList[Math.floor(Math.random() * normalList.length)];
+        } else {
+            // Lấy quẻ xui (để bán hàng)
+            const badList = fortunes.filter(f => f.type === 'bad');
+            selectedFortune = badList[Math.floor(Math.random() * badList.length)];
         }
 
-        function showAllScreens(show) {
-            document.querySelectorAll('.screen').forEach(s => s.style.display = show ? 'block' : 'none');
-        }
+        return { text: selectedFortune.text, type: selectedFortune.type, zodiac, luckyNum };
+    }
 
-        function confetti(isVip = false) {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const particles = [];
-            const numParticles = isVip ? 400 : 150;
-            for (let i = 0; i < numParticles; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 4 + 1,
-                    d: Math.random() * numParticles / 100,
-                    color: `hsl(${Math.random()*360}, 100%, 50%)`,
-                    tilt: Math.random() * 10 - 10,
-                    tiltAngleIncremental: (Math.random() * 0.07) + .05,
-                    tiltAngle: 0
-                });
-            }
-            let animationFrame;
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach((p, index) => {
-                    p.tiltAngle += p.tiltAngleIncremental;
-                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
-                    p.tilt = Math.sin(p.tiltAngle) * 15;
-                    ctx.beginPath();
-                    ctx.lineWidth = p.r;
-                    ctx.strokeStyle = p.color;
-                    ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
-                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
-                    ctx.stroke();
-                    if (p.y > canvas.height + 20) particles.splice(index, 1);
-                });
-                if (particles.length > 0) animationFrame = requestAnimationFrame(draw);
-            }
-            draw();
-        }
+    // Các hàm UI cũ giữ nguyên nhưng cập nhật hiển thị kết quả
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
 
-        function showResult(text, type) {
-            document.getElementById('result-text').innerText = text;
-            const modal = document.getElementById('result-modal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('visible'), 10);
-            vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
-            playAudio(audioTaDa); // Tiếng "ta da" khi hiện quẻ
-            setTimeout(() => { // Delay để tiếng vui/buồn rõ
-                if (type === 'vip') {
-                    playAudio(audioVip);
-                    confetti(true);
-                } else if (type === 'good' || type === 'normal') {
-                    playAudio(audioWin);
-                    if (type === 'good') confetti(false);
-                } else if (type === 'bad') {
-                    playAudio(audioSad);
-                }
-            }, 400);
-            showAllScreens(false);
-        }
+    function showAllScreens(show) {
+        document.querySelectorAll('.screen').forEach(s => s.style.display = show ? 'block' : 'none');
+    }
 
-        // Chia sẻ
-        document.getElementById('share-button').addEventListener('click', () => {
-            const text = `Bói quẻ tương lai 2026 lớp 10/5: ${document.getElementById('result-text').innerText} 😎 Ghé quầy 10/5 mua nước dzui nhé!`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Đã copy, share dzui nhé!');
-            }).catch(() => {
-                alert('Copy hông được, tự share nhé!');
+    // Canvas Confetti (Hiệu ứng pháo giấy)
+    function confetti(isVip = false) {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        const numParticles = isVip ? 400 : 150;
+        for (let i = 0; i < numParticles; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 4 + 1,
+                d: Math.random() * numParticles / 100,
+                color: `hsl(${Math.random()*360}, 100%, 50%)`,
+                tilt: Math.random() * 10 - 10,
+                tiltAngleIncremental: (Math.random() * 0.07) + .05,
+                tiltAngle: 0
             });
-        });
+        }
+        let animationFrame;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.tiltAngle += p.tiltAngleIncremental;
+                p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                p.tilt = Math.sin(p.tiltAngle) * 15;
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
+                ctx.stroke();
+                if (p.y > canvas.height + 20) particles.splice(index, 1);
+            });
+            if (particles.length > 0) animationFrame = requestAnimationFrame(draw);
+        }
+        draw();
+    }
 
-        document.getElementById('confirm1').addEventListener('click', () => {
-            unlockAllAudios();
-            playAudio(audioClick);
-            vibrate(50);
-            showScreen('screen2');
-        });
+    function showResult(text, type, zodiac, luckyNum) {
+        const title = document.getElementById('result-title');
+        const content = document.getElementById('result-text');
+        
+        // Cập nhật nội dung hiển thị phong phú hơn
+        title.innerHTML = `Quẻ Của ${zodiac}`;
+        content.innerHTML = `
+            <div style="font-size: 40px; margin-bottom: 10px;">${type === 'good' ? '🌸' : type === 'bad' ? '⚡' : '🍃'}</div>
+            <strong>Lời phán:</strong><br>${text}<br><br>
+            <span style="color: #c0392b; font-weight: bold;">Số may mắn: ${luckyNum}</span>
+        `;
 
-        document.getElementById('confirm2').addEventListener('click', () => {
-            unlockAllAudios();
-            playAudio(audioClick);
-            vibrate(50);
-            showScreen('screen-birthdate');
-        });
+        const modal = document.getElementById('result-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('visible'), 10);
+        vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
+        playAudio(audioTaDa);
+        
+        setTimeout(() => {
+            if (type === 'vip') {
+                playAudio(audioVip); confetti(true);
+            } else if (type === 'good') {
+                playAudio(audioWin); confetti(false);
+            } else if (type === 'bad') {
+                playAudio(audioSad);
+            } else {
+                playAudio(audioWin);
+            }
+        }, 400);
+        showAllScreens(false);
+    }
 
-        document.getElementById('cast').addEventListener('click', () => {
-            const birthdate = document.getElementById('birthdate').value;
-            if (!birthdate) return alert('Nhập ngày sinh đi nhé!');
-            playAudio(audioClick);
-            vibrate(50);
-            showScreen('screen-jar');
-            const jar = document.getElementById('jar');
-            jar.classList.add('shaking');
-            playAudio(audioShake); // Tiếng xóc đĩa bật ngay
-            vibrate([150, 80, 150, 80, 150, 80, 150, 80, 150]);
-            setTimeout(() => {
-                jar.classList.remove('shaking');
-                audioShake.pause();
-                audioShake.currentTime = 0;
-                showScreen('screen-sticks');
-                const container = document.querySelector('.sticks-container');
-                container.innerHTML = '';
-                let selected = false;
-                for (let i = 0; i < 6; i++) {
-                    const stick = document.createElement('div');
-                    stick.classList.add('stick');
-                    stick.innerHTML = `<div class="stick-content">Quẻ bí mật nhé!</div>`;
-                    stick.style.transform = `rotate(${ (i - 2.5) * 5 }deg)`;
-                    stick.style.opacity = 0;
-                    container.appendChild(stick);
-                    setTimeout(() => stick.style.opacity = 1, i * 100);
-                    stick.addEventListener('click', () => {
-                        if (selected) return;
-                        selected = true;
-                        playAudio(audioClick);
-                        vibrate(50);
-                        stick.classList.add('selected');
-                        document.querySelectorAll('.stick:not(.selected)').forEach(s => s.classList.add('disabled'));
-                        setTimeout(() => {
-                            playAudio(audioFlip);
-                            const fortune = getRandomFortune(birthdate);
-                            localStorage.setItem(storageKey, JSON.stringify(fortune));
-                            showResult(fortune.result, fortune.type);
-                        }, 600);
-                    });
-                }
-            }, 2500);
+    // --- SỰ KIỆN NÚT BẤM ---
+    document.getElementById('share-button').addEventListener('click', () => {
+        // Lấy text thuần túy để share
+        const rawText = document.querySelector('#result-text').innerText.replace(/\n/g, " ");
+        const textToShare = `Bói 2026 lớp 10/5: ${rawText}. Ghé quầy 10/5 ngay nha!`;
+        navigator.clipboard.writeText(textToShare).then(() => {
+            alert('Đã copy nội dung! Dán lên Story Facebook/Insta nha!');
+        }).catch(() => {
+            alert('Copy hông được, chụp màn hình lại nhen!');
         });
+    });
 
-        document.getElementById('close-modal').addEventListener('click', () => {
-            const modal = document.getElementById('result-modal');
-            modal.classList.remove('visible');
-            setTimeout(() => modal.style.display = 'none', 500);
-        });
+    document.getElementById('confirm1').addEventListener('click', () => {
+        unlockAllAudios(); playAudio(audioClick); vibrate(50); showScreen('screen2');
+    });
 
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('confetti-canvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+    document.getElementById('confirm2').addEventListener('click', () => {
+        unlockAllAudios(); playAudio(audioClick); vibrate(50); showScreen('screen-birthdate');
+    });
 
-        document.addEventListener('touchstart', unlockAllAudios, { once: true });
-    </script>
-</body>
-</html>
+    document.getElementById('cast').addEventListener('click', () => {
+        const birthdate = document.getElementById('birthdate').value;
+        if (!birthdate) return alert('Nhập ngày sinh đi, đừng ngại!');
+        playAudio(audioClick); vibrate(50);
+        showScreen('screen-jar');
+        
+        const jar = document.getElementById('jar');
+        jar.classList.add('shaking');
+        playAudio(audioShake);
+        vibrate([150, 80, 150, 80, 150, 80, 150]);
+        
+        setTimeout(() => {
+            jar.classList.remove('shaking');
+            audioShake.pause(); audioShake.currentTime = 0;
+            showScreen('screen-sticks');
+            
+            const container = document.querySelector('.sticks-container');
+            container.innerHTML = '';
+            let selected = false;
+            
+            for (let i = 0; i < 6; i++) {
+                const stick = document.createElement('div');
+                stick.classList.add('stick');
+                // Text ẩn trên que
+                stick.innerHTML = `<div class="stick-content">Quẻ ${i+1}</div>`;
+                stick.style.transform = `rotate(${ (i - 2.5) * 8 }deg) translateY(0px)`;
+                stick.style.opacity = 0;
+                container.appendChild(stick);
+                
+                setTimeout(() => stick.style.opacity = 1, i * 100);
+                
+                stick.addEventListener('click', () => {
+                    if (selected) return;
+                    selected = true;
+                    playAudio(audioClick); vibrate(50);
+                    stick.classList.add('selected');
+                    document.querySelectorAll('.stick:not(.selected)').forEach(s => s.classList.add('disabled'));
+                    
+                    setTimeout(() => {
+                        playAudio(audioFlip);
+                        const result = getRandomFortune(birthdate);
+                        // Lưu full object kết quả vào storage
+                        localStorage.setItem(storageKey, JSON.stringify(result));
+                        showResult(result.text, result.type, result.zodiac, result.luckyNum);
+                    }, 800);
+                });
+            }
+        }, 2500);
+    });
+
+    document.getElementById('close-modal').addEventListener('click', () => {
+        const modal = document.getElementById('result-modal');
+        modal.classList.remove('visible');
+        setTimeout(() => modal.style.display = 'none', 500);
+    });
+
+    window.addEventListener('resize', () => {
+        const canvas = document.getElementById('confetti-canvas');
+        if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    });
+
+    document.addEventListener('touchstart', unlockAllAudios, { once: true });
+</script>
+
