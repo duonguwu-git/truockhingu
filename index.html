@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bói Quẻ 10/5 - Hội Trại Siêu Chill</title>
+    <title>Bói Chiêm Tinh 10/5 - Hội Trại Siêu Chill</title>
     <style>
         /* Reset và base styles */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +19,7 @@
             padding: 20px;
             font-size: 18px;
             line-height: 1.5;
-            position: relative; /* Để credit fixed */
+            position: relative;
         }
         .container {
             max-width: 100%;
@@ -62,7 +62,7 @@
             display: block;
             opacity: 1;
         }
-        /* Ống quẻ - lắc mạnh hơn */
+        /* Ống quẻ - lắc mạnh */
         #jar {
             width: 180px;
             height: 240px;
@@ -99,7 +99,7 @@
         .stick {
             width: 20px;
             height: 150px;
-            background-color: #5d4037; /* Gỗ đậm */
+            background-color: #5d4037;
             margin: 0 10px;
             cursor: pointer;
             transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease-in-out;
@@ -119,11 +119,10 @@
             font-size: 12px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out, bottom 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            will-change: opacity, bottom;
         }
         .stick.selected .stick-content { opacity: 1; bottom: -150px; }
-        .stick.disabled { pointer-events: none; opacity: 0.5; transition: opacity 0.3s ease-in-out; }
-        /* Modal kết quả lớn hơn */
+        .stick.disabled { pointer-events: none; opacity: 0.5; }
+        /* Modal kết quả */
         #result-modal {
             position: fixed;
             top: 0;
@@ -136,7 +135,6 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            will-change: opacity;
         }
         #result-modal.visible { opacity: 1; display: flex; }
         #result-content {
@@ -147,15 +145,18 @@
             text-align: center;
             transform: scale(0.8);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            will-change: transform;
         }
         #result-modal.visible #result-content { transform: scale(1); }
+        #result-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
         #fate-note {
             margin-top: 20px;
             font-style: italic;
             color: #c0392b;
         }
-        /* Credit nhỏ bên trái dưới */
+        /* Credit */
         #credit {
             position: fixed;
             bottom: 10px;
@@ -171,14 +172,14 @@
 </head>
 <body>
     <div class="container">
-        <!-- Màn 1: Xác nhận quét mã -->
+        <!-- Màn 1 -->
         <div id="screen1" class="screen active">
-            <h1>Bói Quẻ Siêu Chill 10/5</h1>
+            <h1>Bói Chiêm Tinh Siêu Chill 10/5</h1>
             <p>Bạn đã quét mã coi bói của 10/5?</p>
             <button id="confirm1">ĐỒNG Ý</button>
         </div>
 
-        <!-- Màn 2: Xác nhận sẵn sàng -->
+        <!-- Màn 2 -->
         <div id="screen2" class="screen">
             <p>Bạn sẵn sàng để biết 2026 của bạn chưa?</p>
             <button id="confirm2">ĐỒNG Ý</button>
@@ -186,26 +187,26 @@
 
         <!-- Màn nhập ngày sinh -->
         <div id="screen-birthdate" class="screen">
-            <p>Nhập ngày sinh của bạn để gieo quẻ nha!</p>
+            <p>Nhập ngày sinh của bạn để xem horoscope nha!</p>
             <input type="date" id="birthdate">
-            <button id="cast">Gieo Quẻ</button>
+            <button id="cast">Gieo Quẻ Chiêm Tinh</button>
         </div>
 
-        <!-- Màn lắc ống quẻ (không chữ nữa, chỉ jar lắc mạnh) -->
+        <!-- Màn lắc ống quẻ (chỉ hình lắc, không chữ) -->
         <div id="screen-jar" class="screen">
             <div id="jar"></div>
         </div>
 
         <!-- Màn rút que -->
         <div id="screen-sticks" class="screen">
-            <p>Rút một que đi, vận mệnh đang chờ!</p>
+            <p>Rút một que để xem horoscope 2026 của cung bạn đi!</p>
             <div class="sticks-container"></div>
         </div>
 
         <!-- Modal kết quả -->
         <div id="result-modal">
             <div id="result-content">
-                <h2>Kết Quả Quẻ Của Bạn</h2>
+                <h2 id="result-title">Horoscope 2026 cho <span id="zodiac-name"></span> của bạn</h2>
                 <p id="result-text"></p>
                 <p id="fate-note">Vận mệnh an bài, không cho gieo lại đâu nha!</p>
                 <button id="close-modal">OK, Đã Rõ!</button>
@@ -213,13 +214,12 @@
         </div>
     </div>
 
-    <!-- Credit nhỏ bên trái dưới -->
     <div id="credit">dev by hai duong</div>
 
-    <canvas id="confetti-canvas" width="300" height="300"></canvas>
+    <canvas id="confetti-canvas"></canvas>
 
     <script>
-        // Âm thanh (thêm âm thanh lách cách gỗ mạnh hơn)
+        // Âm thanh lách cách gỗ mạnh
         const audioClick = new Audio('https://orangefreesounds.com/wp-content/uploads/2023/03/Mechanical-button-click-sound-effect.mp3');
         const audioShake = new Audio('https://orangefreesounds.com/wp-content/uploads/2021/03/Wooden-rattle-sound-effect.mp3?_=1');
         audioShake.loop = true;
@@ -234,10 +234,7 @@
         function unlockAudio(audio) {
             const promise = audio.play();
             if (promise !== undefined) {
-                promise.then(() => {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }).catch(() => {});
+                promise.then(() => audio.pause().currentTime = 0).catch(() => {});
             }
         }
 
@@ -259,233 +256,305 @@
 
         if (fortuneData) {
             showAllScreens(false);
-            showResult(fortuneData.result, fortuneData.type);
+            showResult(fortuneData);
         } else {
             showScreen('screen1');
         }
 
-        // 200 quẻ đầy đủ (giữ nguyên như trước)
-        const fortunes = [
-            // 100 quẻ vui/ổn (good)
-            '2026 của bạn siêu đỉnh, crush rep story 24/7!',
-            'Năm mới ví dày cộm, shopping thoải mái không lo!',
-            'Crush tự động match, date night chill hết sẩy!',
-            'Học hành auto pass, điểm cao ngất ngưởng!',
-            'Party liên tục, bạn bè quẩy banh nóc!',
-            'Công việc lên level, sếp khen nức nở!',
-            'Sức khỏe peak, gym ra abs 6 múi!',
-            'Du lịch free, vé máy bay tự động về tay!',
-            'Game rank legend, team carry hết phần thiên hạ!',
-            'Ăn uống full combo, không lo tăng cân!',
-            'Social media viral, follower tăng vù vù!',
-            'Tình yêu ngọt ngào, không drama nào chen!',
-            'Tiền thưởng bất ngờ, ví reo hò vui vẻ!',
-            'Bạn bè loyal, không ai backstab!',
-            'Sleep schedule ổn, ngủ ngon như em bé!',
-            'Outfit slay, ai cũng quay đầu nhìn!',
-            'Kỹ năng mới unlock, pro hơn bao giờ hết!',
-            'Gia đình hạnh phúc, Tết sum vầy ấm cúng!',
-            'Pet siêu cute, ngày nào cũng vui!',
-            'Music playlist hit, vibe mãi không chán!',
-            '2026 glow up, bạn đẹp trai/xinh gái hơn bao giờ!',
-            'Công nghệ mới, gadget full option!',
-            'Ăn chay healthy, body fit như model!',
-            'Sách hay đọc ngấu, kiến thức đầy đầu!',
-            'Yoga chill, stress bay biến hết!',
-            'Cafe date, gặp gỡ crush lý tưởng!',
-            'Freelance job, tiền về như nước!',
-            'Concert idol, vé VIP tự nhiên có!',
-            'Bóng đá thắng kèo, ăn mừng tưng bừng!',
-            'Nấu ăn pro, bạn bè khen ngon miệng!',
-            'Xe mới tậu, chạy êm ru!',
-            'Học ngoại ngữ, nói vanh vách!',
-            'Volunteer vui, giúp người giúp ta!',
-            'Garden xinh, hoa nở rộ quanh năm!',
-            'Podcast nghe hay, kiến thức tăng vèo!',
-            'Makeup slay, selfie đẹp lung linh!',
-            'Fitness challenge, body transform đỉnh!',
-            'Movie marathon, không phim dở nào!',
-            'Shopping sale, săn deal siêu hời!',
-            'Friendship goal, nhóm chat xôm tụ!',
-            'Coding skill up, dự án thành công!',
-            'Dance cover, view triệu like!',
-            'Foodie tour, ăn sập các quán hot!',
-            'Meditation, tâm hồn bình yên!',
-            'Investment lời to, giàu lên thấy rõ!',
-            'Petition win, thay đổi tích cực!',
-            'Art drawing, tranh đẹp như pro!',
-            'Singing talent, voice hay mê ly!',
-            'Travel vlog, follower mê mẩn!',
-            'DIY project, nhà cửa xinh xắn!',
-            'Gaming tournament, win prize lớn!',
-            'Beauty routine, da đẹp không tì vết!',
-            'Book club, thảo luận sôi nổi!',
-            'Sports day, thắng giải liên tục!',
-            'Cooking class, học món mới đỉnh!',
-            'Photography, ảnh đẹp như studio!',
-            'Volunteer abroad, trải nghiệm đỉnh cao!',
-            'Language exchange, bạn bè quốc tế!',
-            'Startup idea, pitch thành công!',
-            'Concert festival, quẩy hết mình!',
-            'Hiking adventure, view đẹp mê hồn!',
-            'Baking cake, ngon như tiệm!',
-            'Fashion show, style unique!',
-            'Podcast host, listener tăng nhanh!',
-            'Gym buddy, motivate lẫn nhau!',
-            'Movie review, blog hot hit!',
-            'Pet grooming, cute hơn bao giờ!',
-            'Investment club, share tip hay!',
-            'Art exhibition, tranh bán chạy!',
-            'Singing contest, win big!',
-            'Travel solo, tự do khám phá!',
-            'DIY gift, bạn bè cảm động!',
-            'Gaming stream, donate đầy túi!',
-            'Beauty hack, tip viral!',
-            'Book writing, publish thành công!',
-            'Sports league, team vô địch!',
-            'Cooking vlog, subscribe đông!',
-            'Photo contest, win prize!',
-            'Volunteer event, impact lớn!',
-            'Language app, level up nhanh!',
-            'Startup funding, investor đổ xô!',
-            'Concert ticket, front row!',
-            'Hiking group, bạn mới vui vẻ!',
-            'Baking contest, judge khen!',
-            'Fashion blog, collab brand!',
-            'Podcast interview, guest nổi tiếng!',
-            'Gym challenge, record mới!',
-            'Movie premiere, red carpet!',
-            'Pet show, prize cute!',
-            'Investment return, profit max!',
-            'Art class, skill pro!',
-            'Singing cover, viral hit!',
-            'Travel blog, sponsor tour!',
-            'DIY home, decor xinh!',
-            'Gaming event, meet idol!',
-            'Beauty tutorial, like triệu!',
-            'Book launch, best seller!',
-            'Sports match, score goal!',
-            'Cooking book, recipe hot!',
-            'Photo exhibition, crowd đông!',
+        // Hàm lấy cung hoàng đạo từ ngày sinh
+        function getZodiacSign(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'Bạch Dương';
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'Kim Ngưu';
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'Song Tử';
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'Cự Giải';
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'Sư Tử';
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'Xử Nữ';
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'Thiên Bình';
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'Bọ Cạp';
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'Nhân Mã';
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'Ma Kết';
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'Bảo Bình';
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'Song Ngư';
+            return 'Không xác định';
+        }
 
-            // 50 quẻ bình thường (normal)
-            '2026 ổn định, không gì bất ngờ.',
-            'Cuộc sống đều đều, chill hàng ngày.',
-            'Công việc ok, lương đúng hạn.',
-            'Bạn bè vẫn vậy, không thay đổi.',
-            'Sức khỏe bình thường, không ốm nặng.',
-            'Học hành trung bình, pass nhẹ nhàng.',
-            'Tình yêu ổn, không drama lớn.',
-            'Gia đình êm ấm, không cãi vã.',
-            'Tiền bạc đủ xài, không dư không thiếu.',
-            'Du lịch ngắn ngày, relax cơ bản.',
-            'Game chơi vui, rank ổn định.',
-            'Ăn uống thường, không tăng cân.',
-            'Social media bình thường, like đều.',
-            'Sleep ok, ngủ đủ giấc.',
-            'Outfit basic, không nổi bật.',
-            'Kỹ năng duy trì, không up không down.',
-            'Party nhỏ, vui vừa phải.',
-            'Pet khỏe mạnh, chơi đùa hàng ngày.',
-            'Music nghe quen, không hit mới.',
-            'Glow up nhẹ, nhìn ổn hơn tí.',
-            'Công nghệ cũ, vẫn dùng tốt.',
-            'Ăn healthy bình thường, body ok.',
-            'Sách đọc đều, kiến thức thêm.',
-            'Yoga cơ bản, thư giãn thôi.',
-            'Cafe solo, chill một mình.',
-            'Freelance ổn, job đều đều.',
-            'Concert online, xem free.',
-            'Bóng đá xem, không cá cược.',
-            'Nấu ăn hàng ngày, không đặc sắc.',
-            'Xe cũ, chạy êm.',
-            'Học ngoại ngữ chậm, nhưng tiến bộ.',
-            'Volunteer địa phương, giúp vui.',
-            'Garden nhỏ, tưới cây hàng tuần.',
-            'Podcast nghe, kiến thức cơ bản.',
-            'Makeup daily, không cầu kỳ.',
-            'Fitness đều, không thay đổi.',
-            'Movie xem cũ, không mới mẻ.',
-            'Shopping thường, không sale lớn.',
-            'Friendship ổn, chat đều.',
-            'Coding basic, project nhỏ.',
-            'Dance hobby, vui thôi.',
-            'Foodie ăn quen, không thử mới.',
-            'Meditation ngắn, relax ok.',
-            'Investment ổn, không lời lớn.',
-            'Petition tham gia, không win.',
-            'Art doodle, không pro.',
-            'Singing shower, không contest.',
-            'Travel gần, không xa.',
-            'DIY simple, không phức tạp.',
-            'Gaming casual, không tournament.',
-
-            // 50 quẻ xui (bad)
-            '2026 hơi xui, crush ghost liên tục. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Tiền bay vèo, ví teo lại. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Học hành trễ nãi, điểm thấp. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Bạn bè drama, cãi nhau um sùm. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Sức khỏe lẹt đẹt, mệt mỏi thường. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Công việc lag, deadline dí. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Tình yêu flop, date fail. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Gia đình nhỏ xích mích. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Du lịch hỏng, mưa suốt. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Game thua streak, rank drop. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Ăn uống ngộ độc nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Social media unfollow. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Sleep rối loạn, mất ngủ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Outfit fail, mặc xấu. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Kỹ năng stuck, không tiến. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Party flop, ít người. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Pet ốm nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Music nghe chán. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Glow down, nhìn mệt. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Công nghệ hỏng, lag máy. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Ăn healthy fail, tăng cân. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Sách đọc quên. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Yoga chấn thương nhẹ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Cafe date hủy. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Freelance no job. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Concert hủy show. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Bóng đá thua kèo. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Nấu ăn cháy khét. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Xe hỏng giữa đường. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Học ngoại ngữ quên từ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Volunteer mệt mỏi. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Garden úa lá. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Podcast boring. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Makeup dị ứng. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Fitness chấn thương. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Movie flop. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Shopping lỗ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Friendship fade. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Coding bug. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Dance step wrong. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Foodie ngộ độc. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Meditation distract. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Investment lỗ. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Petition fail. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Art mess up. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Singing off key. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Travel delay. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'DIY fail. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Gaming lag. Mua nước tại quầy 10/5 để giải nghiệp!',
-            'Beauty acne. Mua nước tại quầy 10/5 để giải nghiệp!'
-        ];
+        // Câu bói chiêm tinh theo từng cung (Gen Z hài hước, tổng ~192 câu)
+        const zodiacFortunes = {
+            'Bạch Dương': [
+                // Good
+                'Bạch Dương 2026 năng lượng max, crush đổ rạp, bạn lead mọi drama!',
+                'Bạch Dương năm nay tiền về tay, shopping slay không giới hạn!',
+                'Bạch Dương glow up mạnh, ai cũng phải quay đầu nhìn!',
+                'Bạch Dương công việc thăng tiến, sếp khen tới tấp!',
+                'Bạch Dương party king, bạn bè quẩy theo max vol!',
+                'Bạch Dương crush confess trước, date night liên tục!',
+                'Bạch Dương game rank legend, carry team dễ dàng!',
+                'Bạch Dương du lịch adventure, trải nghiệm đỉnh cao!',
+                // Normal
+                'Bạch Dương 2026 ổn áp, cuộc sống chill đều đều.',
+                'Bạch Dương công việc bình thường, lương đúng hạn.',
+                'Bạch Dương tình yêu ổn, không drama lớn.',
+                'Bạch Dương sức khỏe ok, không ốm vặt.',
+                // Bad
+                'Bạch Dương hơi xui, dễ nóng tính cãi vã. Mua nước 10/5 giải nghiệp!',
+                'Bạch Dương tiền tiêu impulsively, ví teo. Mua nước 10/5 giải!',
+                'Bạch Dương crush ghost bất ngờ. Mua nước 10/5 chill lại!',
+                'Bạch Dương deadline dí, stress nhẹ. Mua nước 10/5 relax!'
+            ],
+            'Kim Ngưu': [
+                // Good
+                'Kim Ngưu 2026 tiền đầy ví, giàu lên thấy rõ!',
+                'Kim Ngưu ăn uống full combo, foodie tour sập quán!',
+                'Kim Ngưu tình yêu ngọt ngào, crush loyal max!',
+                'Kim Ngưu nhà cửa xinh, decor slay!',
+                'Kim Ngưu sức khỏe peak, body fit như model!',
+                'Kim Ngưu investment lời to, profit max!',
+                'Kim Ngưu bạn bè loyal, nhóm chat xôm!',
+                'Kim Ngưu shopping sale, săn deal hời!',
+                // Normal
+                'Kim Ngưu 2026 ổn định, không biến động lớn.',
+                'Kim Ngưu công việc đều đều, lương về đúng hạn.',
+                'Kim Ngưu cuộc sống chill, Netflix hàng ngày.',
+                'Kim Ngưu sức khỏe bình thường, ăn uống ok.',
+                // Bad
+                'Kim Ngưu hơi xui, tiền tiêu chậm. Mua nước 10/5 giải nghiệp!',
+                'Kim Ngưu ăn uống ngộ độc nhẹ. Mua nước 10/5 giải!',
+                'Kim Ngưu crush chậm tiến. Mua nước 10/5 đẩy tốc độ!',
+                'Kim Ngưu lười nhẹ, gym skip. Mua nước 10/5 năng lượng!'
+            ],
+            'Song Tử': [
+                // Good
+                'Song Tử 2026 giao tiếp god tier, bạn mới đầy!',
+                'Song Tử viral social, follower tăng vù!',
+                'Song Tử đa nhiệm pro, làm gì cũng thành công!',
+                'Song Tử crush match nhanh, date đa dạng!',
+                'Song Tử ý tưởng bùng nổ, startup hit!',
+                'Song Tử party quẩy max, vibe cao!',
+                'Song Tử học hành đỉnh, kiến thức full!',
+                'Song Tử travel nhiều, khám phá khắp nơi!',
+                // Normal
+                'Song Tử 2026 ổn, drama nhẹ thôi.',
+                'Song Tử công việc đa dạng, không nhàm.',
+                'Song Tử bạn bè nhiều, chat xôm.',
+                'Song Tử sức khỏe ok, năng lượng đều.',
+                // Bad
+                'Song Tử hơi xui, drama bạn bè. Mua nước 10/5 giải nghiệp!',
+                'Song Tử ghost nhiều, crush biến mất. Mua nước 10/5 giải!',
+                'Song Tử đa nhiệm quá, mệt nhẹ. Mua nước 10/5 năng lượng!',
+                'Song Tử ý tưởng flop. Mua nước 10/5 inspiration!'
+            ],
+            'Cự Giải': [
+                // Good
+                'Cự Giải 2026 gia đình hạnh phúc, sum vầy ấm cúng!',
+                'Cự Giải tình yêu ngọt, crush chăm sóc max!',
+                'Cự Giải cảm xúc positive, vibe chill!',
+                'Cự Giải nhà cửa cozy, decor cute!',
+                'Cự Giải bạn bè loyal, luôn bên cạnh!',
+                'Cự Giải sáng tạo đỉnh, art slay!',
+                'Cự Giải sức khỏe tốt, tâm hồn bình yên!',
+                'Cự Giải tiền ổn, tiết kiệm pro!',
+                // Normal
+                'Cự Giải 2026 ổn, cảm xúc đều đều.',
+                'Cự Giải gia đình bình yên, không xích mích.',
+                'Cự Giải công việc nhẹ nhàng, chill.',
+                'Cự Giải sức khỏe bình thường.',
+                // Bad
+                'Cự Giải hơi xui, mood swing. Mua nước 10/5 giải nghiệp!',
+                'Cự Giải nhớ nhà, homesick. Mua nước 10/5 comfort!',
+                'Cự Giải crush lạnh lùng. Mua nước 10/5 ấm áp!',
+                'Cự Giải cảm xúc down nhẹ. Mua nước 10/5 vibe up!'
+            ],
+            'Sư Tử': [
+                // Good
+                'Sư Tử 2026 shine bright, center of attention!',
+                'Sư Tử crush mê mẩn, date luxury!',
+                'Sư Tử công việc lead, sếp tin tưởng!',
+                'Sư Tử party queen/king, quẩy banh!',
+                'Sư Tử glow up drama, style slay!',
+                'Sư Tử tiền về mạnh, rich vibe!',
+                'Sư Tử sáng tạo bùng nổ, viral hit!',
+                'Sư Tử bạn bè đông, fanclub real!',
+                // Normal
+                'Sư Tử 2026 ổn, spotlight nhẹ.',
+                'Sư Tử công việc bình thường, nổi vừa.',
+                'Sư Tử tình yêu ổn, không drama.',
+                'Sư Tử sức khỏe ok.',
+                // Bad
+                'Sư Tử hơi xui, ego clash. Mua nước 10/5 giải nghiệp!',
+                'Sư Tử attention thiếu. Mua nước 10/5 shine lại!',
+                'Sư Tử crush không notice. Mua nước 10/5 spotlight!',
+                'Sư Tử drama tự tạo. Mua nước 10/5 chill!'
+            ],
+            'Xử Nữ': [
+                // Good
+                'Xử Nữ 2026 perfect plan, mọi thứ on track!',
+                'Xử Nữ công việc pro, thăng tiến nhanh!',
+                'Xử Nữ sức khỏe peak, routine đỉnh!',
+                'Xử Nữ tiền tiết kiệm good, giàu chậm mà chắc!',
+                'Xử Nữ tổ chức god, nhà cửa sạch đẹp!',
+                'Xử Nữ học hành top, kiến thức full!',
+                'Xử Nữ crush hiểu ý, relationship perfect!',
+                'Xử Nữ self-care slay, glow natural!',
+                // Normal
+                'Xử Nữ 2026 ổn, detail đều ok.',
+                'Xử Nữ công việc chuẩn, không lỗi.',
+                'Xử Nữ sức khỏe bình thường.',
+                'Xử Nữ tiền đủ xài.',
+                // Bad
+                'Xử Nữ hơi xui, perfectionist stress. Mua nước 10/5 giải nghiệp!',
+                'Xử Nữ criticize nhiều. Mua nước 10/5 chill!',
+                'Xử Nữ plan fail nhẹ. Mua nước 10/5 adjust!',
+                'Xử Nữ overthink. Mua nước 10/5 relax!'
+            ],
+            'Thiên Bình': [
+                // Good
+                'Thiên Bình 2026 balance perfect, cuộc sống hài hòa!',
+                'Thiên Bình crush romantic, date aesthetic!',
+                'Thiên Bình bạn bè đông, social butterfly!',
+                'Thiên Bình style slay, outfit luôn on point!',
+                'Thiên Bình công việc teamwork đỉnh!',
+                'Thiên Bình tiền balance good, chi tiêu hợp lý!',
+                'Thiên Bình beauty peak, glow natural!',
+                'Thiên Bình peace vibe, không drama!',
+                // Normal
+                'Thiên Bình 2026 ổn, balance đều.',
+                'Thiên Bình mối quan hệ bình thường.',
+                'Thiên Bình công việc hài hòa.',
+                'Thiên Bình sức khỏe ok.',
+                // Bad
+                'Thiên Bình hơi xui, indecisive. Mua nước 10/5 giải nghiệp!',
+                'Thiên Bình drama mối quan hệ. Mua nước 10/5 balance!',
+                'Thiên Bình chi tiêu mất balance. Mua nước 10/5 control!',
+                'Thiên Bình conflict nhẹ. Mua nước 10/5 peace!'
+            ],
+            'Bọ Cạp': [
+                // Good
+                'Bọ Cạp 2026 intense passion, crush deep love!',
+                'Bọ Cạp power max, achieve goal lớn!',
+                'Bọ Cạp tiền mystery về tay!',
+                'Bọ Cạp secret talent unlock, pro level!',
+                'Bọ Cạp relationship deep, loyal max!',
+                'Bọ Cạp transform glow up, phiên bản mới!',
+                'Bọ Cạp intuition god, đoán đúng hết!',
+                'Bọ Cạp revenge sweet nếu cần!',
+                // Normal
+                'Bọ Cạp 2026 ổn, intense vừa phải.',
+                'Bọ Cạp relationship bình thường.',
+                'Bọ Cạp công việc đều.',
+                'Bọ Cạp sức khỏe ok.',
+                // Bad
+                'Bọ Cạp hơi xui, jealousy lên. Mua nước 10/5 giải nghiệp!',
+                'Bọ Cạp trust issue. Mua nước 10/5 heal!',
+                'Bọ Cạp secret lộ. Mua nước 10/5 protect!',
+                'Bọ Cạp intense quá, stress. Mua nước 10/5 calm!'
+            ],
+            'Nhân Mã': [
+                // Good
+                'Nhân Mã 2026 adventure max, travel khắp nơi!',
+                'Nhân Mã freedom vibe, sống hết mình!',
+                'Nhân Mã crush fun, date phiêu lưu!',
+                'Nhân Mã luck cao, trúng kèo liên tục!',
+                'Nhân Mã học hỏi new, kiến thức rộng!',
+                'Nhân Mã party wild, quẩy quên lối về!',
+                'Nhân Mã optimistic max, vibe positive!',
+                'Nhân Mã opportunity đến ào ào!',
+                // Normal
+                'Nhân Mã 2026 ổn, adventure nhẹ.',
+                'Nhân Mã cuộc sống free bình thường.',
+                'Nhân Mã công việc ok.',
+                'Nhân Mã sức khỏe tốt.',
+                // Bad
+                'Nhân Mã hơi xui, commit phobia. Mua nước 10/5 giải nghiệp!',
+                'Nhân Mã travel delay. Mua nước 10/5 smooth!',
+                'Nhân Mã over optimistic, fail nhẹ. Mua nước 10/5 reality!',
+                'Nhân Mã restless. Mua nước 10/5 chill!'
+            ],
+            'Ma Kết': [
+                // Good
+                'Ma Kết 2026 ambition achieve, CEO vibe!',
+                'Ma Kết tiền giàu to, bank full!',
+                'Ma Kết công việc boss level, thăng chức!',
+                'Ma Kết discipline pro, goal complete!',
+                'Ma Kết relationship stable, long term!',
+                'Ma Kết respect max, ai cũng nể!',
+                'Ma Kết plan perfect, execute đỉnh!',
+                'Ma Kết legacy build, thành công lâu dài!',
+                // Normal
+                'Ma Kết 2026 ổn, work hard bình thường.',
+                'Ma Kết tiền đủ, tiết kiệm good.',
+                'Ma Kết công việc đều.',
+                'Ma Kết sức khỏe bền.',
+                // Bad
+                'Ma Kết hơi xui, workaholic burnout. Mua nước 10/5 giải nghiệp!',
+                'Ma Kết pressure cao. Mua nước 10/5 rest!',
+                'Ma Kết strict quá, bạn bè xa. Mua nước 10/5 balance!',
+                'Ma Kết goal delay. Mua nước 10/5 patience!'
+            ],
+            'Bảo Bình': [
+                // Good
+                'Bảo Bình 2026 innovative hit, idea viral!',
+                'Bảo Bình friend group lớn, community strong!',
+                'Bảo Bình unique slay, style khác biệt!',
+                'Bảo Bình humanitarian win, impact lớn!',
+                'Bảo Bình tech pro, gadget master!',
+                'Bảo Bình freedom max, sống theo ý!',
+                'Bảo Bình crush intellectual, deep talk!',
+                'Bảo Bình future bright, vision clear!',
+                // Normal
+                'Bảo Bình 2026 ổn, idea đều đều.',
+                'Bảo Bình social bình thường.',
+                'Bảo Bình công việc creative ok.',
+                'Bảo Bình sức khỏe good.',
+                // Bad
+                'Bảo Bình hơi xui, detached cảm xúc. Mua nước 10/5 giải nghiệp!',
+                'Bảo Bình rebel quá, conflict. Mua nước 10/5 harmony!',
+                'Bảo Bình idea flop. Mua nước 10/5 inspiration!',
+                'Bảo Bình aloof, bạn bè hiểu lầm. Mua nước 10/5 connect!'
+            ],
+            'Song Ngư': [
+                // Good
+                'Song Ngư 2026 dream come true, magic vibe!',
+                'Song Ngư creative peak, art viral!',
+                'Song Ngư tình yêu romantic, soulmate find!',
+                'Song Ngư intuition god, đoán đúng hết!',
+                'Song Ngư empathy max, giúp người vui!',
+                'Song Ngư music/art slay, talent shine!',
+                'Song Ngư escape chill, travel dream!',
+                'Song Ngư healing good, tâm hồn bình yên!',
+                // Normal
+                'Song Ngư 2026 ổn, dream nhẹ nhàng.',
+                'Song Ngư cảm xúc đều, không wave lớn.',
+                'Song Ngư công việc creative bình thường.',
+                'Song Ngư sức khỏe ok.',
+                // Bad
+                'Song Ngư hơi xui, escapist quá. Mua nước 10/5 giải nghiệp!',
+                'Song Ngư delusion nhẹ. Mua nước 10/5 reality!',
+                'Song Ngư crush unrequited. Mua nước 10/5 heal!',
+                'Song Ngư sensitive over. Mua nước 10/5 strong!'
+            ]
+        };
 
         const vipFortune = '💎 THIẾU GIA VIP 10/5! Quà đặc biệt chờ bạn tại quầy!';
 
         function getRandomFortune(birthdate) {
             if (birthdate === '2010-06-25') {
-                return { result: vipFortune, type: 'vip' };
+                return { result: vipFortune, type: 'vip', zodiac: 'VIP Đặc Biệt' };
             }
-            const index = Math.floor(Math.random() * fortunes.length);
-            const type = index < 100 ? 'good' : index < 150 ? 'normal' : 'bad';
-            let result = fortunes[index];
+            const zodiac = getZodiacSign(birthdate);
+            if (zodiac === 'Không xác định') {
+                return { result: 'Ngày sinh lạ quá, thử lại đi bro!', type: 'normal', zodiac: '???' };
+            }
+            const array = zodiacFortunes[zodiac] || [];
+            const index = Math.floor(Math.random() * array.length);
+            let result = array[index];
+            const type = result.includes('xui') || result.includes('giải nghiệp') ? 'bad' : result.includes('ổn') ? 'normal' : 'good';
             if (Math.random() < 0.1 && type !== 'bad') {
                 result += ' Nhận móc khóa quà từ 10/5!';
             }
-            return { result, type };
+            return { result, type, zodiac };
         }
 
         function showScreen(id) {
@@ -536,25 +605,27 @@
             draw();
         }
 
-        function showResult(text, type) {
-            document.getElementById('result-text').innerText = text;
+        function showResult(fortune) {
+            document.getElementById('zodiac-name').innerText = fortune.zodiac || 'bạn';
+            document.getElementById('result-text').innerText = fortune.result;
             const modal = document.getElementById('result-modal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('visible'), 10);
-            vibrate(type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
+            vibrate(fortune.type === 'vip' ? [100, 50, 100, 50, 100] : [50]);
             playAudio(audioTaDa);
-            if (type === 'vip') {
+            if (fortune.type === 'vip') {
                 playAudio(audioVip);
                 confetti(true);
-            } else if (type === 'good' || type === 'normal') {
+            } else if (fortune.type === 'good' || fortune.type === 'normal') {
                 playAudio(audioWin);
-                if (type === 'good') confetti(false);
-            } else if (type === 'bad') {
+                if (fortune.type === 'good') confetti(false);
+            } else if (fortune.type === 'bad') {
                 playAudio(audioSad);
             }
             showAllScreens(false);
         }
 
+        // Event listeners (giữ nguyên)
         document.getElementById('confirm1').addEventListener('click', () => {
             unlockAllAudios();
             playAudio(audioClick);
@@ -576,8 +647,8 @@
             vibrate(50);
             showScreen('screen-jar');
             document.getElementById('jar').classList.add('shaking');
-            playAudio(audioShake); // Tiếng lách cách gỗ mạnh
-            vibrate([100, 50, 100, 50, 100, 50, 100, 50, 100]); // Rung mạnh hơn
+            playAudio(audioShake);
+            vibrate([100, 50, 100, 50, 100, 50, 100, 50, 100]);
             setTimeout(() => {
                 document.getElementById('jar').classList.remove('shaking');
                 audioShake.pause();
@@ -605,7 +676,7 @@
                             playAudio(audioFlip);
                             const fortune = getRandomFortune(birthdate);
                             localStorage.setItem(storageKey, JSON.stringify(fortune));
-                            showResult(fortune.result, fortune.type);
+                            showResult(fortune);
                         }, 600);
                     });
                 }
